@@ -19,85 +19,14 @@ jobs:
 
             - name: Install dependencies for admin
               run: |
-                  cd admin
                   yarn install
 
             - name: Run ESLint on admin
               run: |
-                  cd admin
                   yarn lint --fix
 
             - name: Run Prettier (check formatting) on admin
               run: |
-                  cd admin
-                  yarn format --write
-
-            - name: Commit and push changes if any
-              run: |
-                  git config --global user.name 'github-actions[bot]'
-                  git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-                  git add .
-                  git commit -m "Auto-fix lint and format issues" || echo "No changes to commit"
-                  git push origin HEAD:${{ github.event.pull_request.head.ref }} || echo "No changes to push"
-
-    lint-backend:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v3
-
-            - name: Set up Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: "20.15.0"
-
-            - name: Install dependencies for backend
-              run: |
-                  cd backend
-                  yarn install
-
-            - name: Run ESLint on backend
-              run: |
-                  cd backend
-                  yarn lint --fix
-
-            - name: Run Prettier (check formatting) on backend
-              run: |
-                  cd backend
-                  yarn format --write
-
-            - name: Commit and push changes if any
-              run: |
-                  git config --global user.name 'github-actions[bot]'
-                  git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-                  git add .
-                  git commit -m "Auto-fix lint and format issues" || echo "No changes to commit"
-                  git push origin HEAD:${{ github.event.pull_request.head.ref }} || echo "No changes to push"
-
-    lint-frontend:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v3
-
-            - name: Set up Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: "20.15.0"
-
-            - name: Install dependencies for frontend
-              run: |
-                  cd frontend
-                  yarn install
-
-            - name: Run ESLint on frontend
-              run: |
-                  cd frontend
-                  yarn lint --fix
-
-            - name: Run Prettier (check formatting) on frontend
-              run: |
-                  cd frontend
                   yarn format --write
 
             - name: Commit and push changes if any
