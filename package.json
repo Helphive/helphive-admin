@@ -106,8 +106,8 @@
 	},
 	"lint-staged": {
 		"src/**/*.{js,jsx,ts,tsx,json,css,md}": [
-			"yarn run format --write",
-			"yarn run lint:fix"
+			"npm run format --write",
+			"npm run lint --fix"
 		]
 	}
 }

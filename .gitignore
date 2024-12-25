@@ -133,8 +133,8 @@ dist-ssr
 *.sw?
 .yarnrc.yml
 .yarn
-package-lock.json
-# yarn.lock
+# package-lock.json
+yarn.lock
 .env
 .env.qa
 .env.prod
