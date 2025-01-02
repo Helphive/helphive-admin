@@ -21,7 +21,7 @@ import { useGetMenuMaster } from "api/menu";
 // assets
 import { ArrowRight2 } from "iconsax-react";
 
-import avatar1 from "assets/images/users/avatar-1.png";
+import avatar1 from "assets/images/users/avatar-7.png";
 
 const ExpandMore = styled(IconButton, {
 	shouldForwardProp: (prop) => prop !== "theme" && prop !== "expand" && prop !== "drawerOpen",
@@ -103,7 +103,7 @@ export default function UserList() {
 					<ListItemText
 						primary={user?.name}
 						sx={{ ...(!drawerOpen && { display: "none" }) }}
-						secondary="UI/UX Designer"
+						secondary={user?.firstName + " " + user?.lastName}
 					/>
 				</ListItem>
 			</List>

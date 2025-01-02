@@ -4,8 +4,8 @@ import { lazy } from "react";
 import Loadable from "components/Loadable";
 import DashboardLayout from "layout/Dashboard";
 import PagesLayout from "layout/Pages";
-import SimpleLayout from "layout/Simple";
-import { SimpleLayoutType } from "config";
+// import SimpleLayout from "layout/Simple";
+// import { SimpleLayoutType } from "config";
 
 const MaintenanceError = Loadable(lazy(() => import("pages/maintenance/error/404")));
 const MaintenanceError500 = Loadable(lazy(() => import("pages/maintenance/error/500")));
@@ -14,11 +14,12 @@ const MaintenanceUnderConstruction = Loadable(
 );
 const MaintenanceComingSoon = Loadable(lazy(() => import("pages/maintenance/coming-soon/coming-soon")));
 
-const AppContactUS = Loadable(lazy(() => import("pages/contact-us")));
-// render - sample page
-const SamplePage = Loadable(lazy(() => import("pages/extra-pages/sample-page")));
+// const AppContactUS = Loadable(lazy(() => import("pages/contact-us")));
+// render - pages
+const HomePage = Loadable(lazy(() => import("pages/home-page")));
 const PendingApplicationsPage = Loadable(lazy(() => import("pages/provider-applications/pending-applications")));
 const ReviewedApplicationsPage = Loadable(lazy(() => import("pages/provider-applications/reviewed-applications")));
+const ManageDisputesPage = Loadable(lazy(() => import("pages/disputes/manage-disputes")));
 
 // ==============================|| MAIN ROUTES ||============================== //
 
@@ -30,8 +31,8 @@ const MainRoutes = {
 			element: <DashboardLayout />,
 			children: [
 				{
-					path: "sample-page",
-					element: <SamplePage />,
+					path: "home",
+					element: <HomePage />,
 				},
 				{
 					path: "pending-applications",
@@ -41,18 +42,22 @@ const MainRoutes = {
 					path: "reviewed-applications",
 					element: <ReviewedApplicationsPage />,
 				},
-			],
-		},
-		{
-			path: "/",
-			element: <SimpleLayout layout={SimpleLayoutType.SIMPLE} />,
-			children: [
 				{
-					path: "contact-us",
-					element: <AppContactUS />,
+					path: "manage-disputes",
+					element: <ManageDisputesPage />,
 				},
 			],
 		},
+		// {
+		// 	path: "/",
+		// 	element: <SimpleLayout layout={SimpleLayoutType.SIMPLE} />,
+		// 	children: [
+		// 		{
+		// 			path: "contact-us",
+		// 			element: <AppContactUS />,
+		// 		},
+		// 	],
+		// },
 		{
 			path: "/maintenance",
 			element: <PagesLayout />,

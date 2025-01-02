@@ -15,6 +15,8 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 // third-party
 import * as Yup from "yup";
@@ -34,6 +36,7 @@ import { Eye, EyeSlash } from "iconsax-react";
 
 export default function AuthLogin({ forgot }) {
 	const [checked, setChecked] = useState(false);
+	const [openSnackbar, setOpenSnackbar] = useState(false);
 
 	const { isLoggedIn, login } = useAuth();
 	const scriptedRef = useScriptRef();
@@ -47,12 +50,19 @@ export default function AuthLogin({ forgot }) {
 		event.preventDefault();
 	};
 
+	const handleCloseSnackbar = (_event, reason) => {
+		if (reason === "clickaway") {
+			return;
+		}
+		setOpenSnackbar(false);
+	};
+
 	return (
 		<>
 			<Formik
 				initialValues={{
-					email: "maiz@gmail.com",
-					password: "maiz1234",
+					email: "maizasadmin@gmail.com",
+					password: "Thunder.royal@1",
 					submit: null,
 				}}
 				validationSchema={Yup.object().shape({
@@ -74,6 +84,7 @@ export default function AuthLogin({ forgot }) {
 							setErrors({ submit: err.message });
 							setSubmitting(false);
 						}
+						setOpenSnackbar(true);
 					}
 				}}
 			>
@@ -185,6 +196,11 @@ export default function AuthLogin({ forgot }) {
 					</form>
 				)}
 			</Formik>
+			<Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+				<Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: "100%" }}>
+					Login failed. Please try again.
+				</Alert>
+			</Snackbar>
 		</>
 	);
 }

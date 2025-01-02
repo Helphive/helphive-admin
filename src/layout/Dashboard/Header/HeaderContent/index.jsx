@@ -3,11 +3,11 @@ import Box from "@mui/material/Box";
 
 // project-imports
 import Search from "./Search";
-import Message from "./Message";
 import Profile from "./Profile";
-import Notification from "./Notification";
 import MobileSection from "./MobileSection";
-import FullScreen from "./FullScreen";
+// import Message from "./Message";
+// import Notification from "./Notification";
+// import FullScreen from "./FullScreen";
 
 import { MenuOrientation } from "config";
 import useConfig from "hooks/useConfig";
@@ -26,9 +26,9 @@ export default function HeaderContent() {
 			{!downLG && <Search />}
 			{downLG && <Box sx={{ width: "100%", ml: 1 }} />}
 
-			<Notification />
-			<FullScreen />
-			<Message />
+			{/* <Notification /> */}
+			{/* <FullScreen /> */}
+			{/* <Message /> */}
 			{!downLG && <Profile />}
 			{downLG && <MobileSection />}
 		</>

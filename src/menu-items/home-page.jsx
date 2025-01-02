@@ -4,23 +4,23 @@
 import { FormattedMessage } from "react-intl";
 
 // assets
-import { DocumentCode2 } from "iconsax-react";
+import { Home2 } from "iconsax-react";
 
 // type
 
 // icons
 const icons = {
-	samplePage: DocumentCode2,
+	homePage: Home2,
 };
 
 // ==============================|| MENU ITEMS - SAMPLE PAGE ||============================== //
 
-const samplePage = {
-	id: "sample-page",
-	title: <FormattedMessage id="sample-page" />,
+const homePage = {
+	id: "home-page",
+	title: <FormattedMessage id="home-page" />,
 	type: "group",
-	url: "/sample-page",
-	icon: icons.samplePage,
+	url: "/home",
+	icon: icons.homePage,
 };
 
-export default samplePage;
+export default homePage;
