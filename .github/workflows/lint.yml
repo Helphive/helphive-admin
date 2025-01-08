@@ -16,8 +16,11 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version-file: ".nvmrc"
+
+            - name: Verify Node.js version
               run: |
-                  eacho "Node version: $(node --version)"
+                  node -v
+                  npm -v
 
             - name: Install dependencies for admin
               run: |
