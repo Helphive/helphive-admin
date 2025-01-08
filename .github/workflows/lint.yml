@@ -9,13 +9,15 @@ jobs:
     lint-admin:
         runs-on: ubuntu-latest
         steps:
+            with:
+              node-version-file: ".nvmrc"
+              
             - name: Checkout code
               uses: actions/checkout@v3
 
             - name: Set up Node.js
               uses: actions/setup-node@v3
-              with:
-                  node-version-file: ".nvmrc"
+              
 
             - name: Install dependencies for admin
               run: |
