@@ -9,9 +9,6 @@ jobs:
     lint-admin:
         runs-on: ubuntu-latest
         steps:
-            with:
-              node-version-file: ".nvmrc"
-              
             - name: Checkout code
               uses: actions/checkout@v3
 
@@ -38,3 +35,6 @@ jobs:
                   git add .
                   git commit -m "Auto-fix lint and format issues" || echo "No changes to commit"
                   git push origin HEAD:${{ github.event.pull_request.head.ref }} || echo "No changes to push"
+            
+            with:
+              node-version-file: ".nvmrc"
