@@ -1,6 +1,6 @@
 {
-	"name": "able-pro-material-react",
-	"version": "9.2.0",
+	"name": "helphive-admin",
+	"version": "1.0.0",
 	"private": true,
 	"dependencies": {
 		"@emotion/cache": "^11.11.0",
