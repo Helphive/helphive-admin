@@ -1,13 +1,14 @@
 // project import
-import samplePage from "./sample-page";
+import homePage from "./home-page";
 import providerApplications from "./provider-applications";
-import support from "./support";
-import pages from "./pages";
+import disputes from "./disputes";
+// import support from "./support";
+// import pages from "./pages";
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-	items: [samplePage, providerApplications, pages, support],
+	items: [homePage, providerApplications, disputes],
 };
 
 export default menuItems;

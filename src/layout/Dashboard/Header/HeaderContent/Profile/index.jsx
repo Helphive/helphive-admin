@@ -29,7 +29,7 @@ import { ThemeMode } from "config";
 import useAuth from "hooks/useAuth";
 
 // assets
-import avatar1 from "assets/images/users/avatar-6.png";
+import avatar1 from "assets/images/users/avatar-7.png";
 import { Setting2, Profile, Logout } from "iconsax-react";
 
 // tab panel wrapper
@@ -147,7 +147,7 @@ export default function ProfilePage() {
 													<Stack>
 														<Typography variant="subtitle1">{user?.name}</Typography>
 														<Typography variant="body2" color="secondary">
-															UI/UX Designer
+															{user?.firstName + " " + user?.lastName}
 														</Typography>
 													</Stack>
 												</Stack>
@@ -205,7 +205,7 @@ export default function ProfilePage() {
 														style={{ marginBottom: 0, marginRight: "10px" }}
 													/>
 												}
-												label="Setting"
+												label="Settings"
 												{...a11yProps(1)}
 											/>
 										</Tabs>
