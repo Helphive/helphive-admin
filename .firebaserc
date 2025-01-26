@@ -1,15 +1,15 @@
 {
-  "projects": {
-    "default": "helphive"
-  },
-  "targets": {
-    "helphive": {
-      "hosting": {
-        "helphive": [
-          "helphive"
-        ]
-      }
-    }
-  },
-  "etags": {}
+	"projects": {
+		"default": "helphive"
+	},
+	"targets": {
+		"helphive": {
+			"hosting": {
+				"helphive": [
+					"helphive"
+				]
+			}
+		}
+	},
+	"etags": {}
 }
