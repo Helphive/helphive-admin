@@ -1,6 +1,13 @@
 import axios from "axios";
 
-const axiosServices = axios.create({ baseURL: import.meta.env.VITE_APP_API_URL || "http://localhost:8080/" });
+const API_URL =
+	import.meta.env.VITE_APP_API_URL ||
+	(import.meta.env.DEV ? "http://localhost:8080" : "https://api.helphive.projects.himaiz.com");
+
+const axiosServices = axios.create({
+	baseURL: API_URL,
+	withCredentials: true,
+});
 
 // ==============================|| AXIOS - FOR MOCK SERVICES ||============================== //
 
