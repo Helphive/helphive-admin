@@ -1,6 +1,18 @@
 import type { ComponentType } from 'react';
 import type { AppIcon } from '@/components/ui/icons';
 import { AdminsIcon, ApplicationsIcon, AuditIcon, OverviewIcon } from '@/components/ui/icons';
+import {
+    AlertsIcon,
+    DependenciesIcon,
+    ErrorsIcon,
+    HealthIcon,
+    LogsIcon,
+    ReleasesIcon,
+    RequestsIcon,
+    TasksIcon,
+    WebhookIcon,
+} from '@/components/ui/icons';
+import { FiringAlertsCount } from '@/features/observability/navCount';
 import type { Permission } from '@/features/auth/permissions';
 import { PendingApplicationsCount } from '@/features/applications/navCount';
 
@@ -59,6 +71,93 @@ export const NAV_ITEMS: NavItem[] = [
         keywords: ['providers', 'review', 'queue', 'approve', 'reject', 'onboarding', 'dbs'],
         Badge: PendingApplicationsCount,
     },
+    // Observability (features/observability).
+    ...(
+        [
+            [
+                'obs-health',
+                'Health',
+                '/observability',
+                HealthIcon,
+                'Is the API working right now',
+                ['status', 'uptime', 'incident', 'monitoring'],
+            ],
+            [
+                'obs-requests',
+                'Requests',
+                '/observability/requests',
+                RequestsIcon,
+                'Traffic, error rate and latency per route',
+                ['latency', 'p95', 'routes', 'endpoints', 'rate limit'],
+            ],
+            [
+                'obs-errors',
+                'Errors',
+                '/observability/errors',
+                ErrorsIcon,
+                'Server and app errors grouped by cause',
+                ['exceptions', 'crashes', 'bugs', 'stack'],
+            ],
+            [
+                'obs-logs',
+                'Logs',
+                '/observability/logs',
+                LogsIcon,
+                'Search the API log in Google Cloud',
+                ['request id', 'trace', 'cloud logging'],
+            ],
+            [
+                'obs-webhooks',
+                'Webhooks',
+                '/observability/webhooks',
+                WebhookIcon,
+                'Stripe events and replays',
+                ['stripe', 'events', 'replay'],
+            ],
+            [
+                'obs-tasks',
+                'Background tasks',
+                '/observability/tasks',
+                TasksIcon,
+                'Earning releases and booking expiries',
+                ['cloud tasks', 'jobs', 'queue', 'replay'],
+            ],
+            [
+                'obs-dependencies',
+                'Dependencies',
+                '/observability/dependencies',
+                DependenciesIcon,
+                'Services the API needs, and their uptime',
+                ['stripe', 'mongodb', 'onesignal', 'resend', 'cometchat'],
+            ],
+            [
+                'obs-releases',
+                'Releases',
+                '/observability/releases',
+                ReleasesIcon,
+                'Each deploy and what changed after it',
+                ['deploys', 'revisions', 'versions'],
+            ],
+            [
+                'obs-alerts',
+                'Alerts',
+                '/observability/alerts',
+                AlertsIcon,
+                'Alert inbox and rules',
+                ['alarms', 'notifications', 'rules', 'on call'],
+            ],
+        ] as const
+    ).map(([id, label, path, icon, description, keywords]) => ({
+        id,
+        section: 'observability' as const,
+        label,
+        path,
+        icon,
+        permission: 'observability.read' as const,
+        description,
+        keywords: [...keywords],
+        ...(id === 'obs-alerts' ? { Badge: FiringAlertsCount } : {}),
+    })),
     {
         id: 'admins',
         section: 'security',

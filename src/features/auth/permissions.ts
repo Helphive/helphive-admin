@@ -18,6 +18,7 @@ export const PERMISSIONS = [
     'payouts.manage',
     'analytics.read',
     'observability.read',
+    'observability.manage',
     'risk.read',
     'risk.manage',
     'support.read',

@@ -30,6 +30,7 @@ import {
     targetTypeLabel,
     type AuditEntry,
 } from './model';
+import { RequestIdLink } from '@/features/observability/parts';
 
 const PAGE_SIZE = 50;
 const DEFAULTS = {
@@ -234,6 +235,7 @@ export default function AuditLogPage() {
                 header: 'Request id',
                 enableSorting: false,
                 accessorFn: (e) => e.requestId ?? '',
+                cell: ({ row }) => <RequestIdLink requestId={row.original.requestId} short />,
             },
         ],
         [now]

@@ -27,6 +27,7 @@ import {
     targetTypeLabel,
     type AuditEntry,
 } from './model';
+import { RequestIdLink } from '@/features/observability/parts';
 
 const mono = 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
 
@@ -294,7 +295,19 @@ export default function AuditEntryPage() {
                                 {
                                     label: 'Request id',
                                     value: entry.requestId ? (
-                                        <Copyable value={entry.requestId} label="request id" />
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                gap: 0.5,
+                                            }}
+                                        >
+                                            <Copyable value={entry.requestId} label="request id" />
+                                            <RequestIdLink
+                                                requestId={entry.requestId}
+                                                label="Show its log entries"
+                                            />
+                                        </Box>
                                     ) : (
                                         ''
                                     ),

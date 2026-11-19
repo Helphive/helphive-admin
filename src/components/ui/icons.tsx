@@ -66,6 +66,18 @@ import {
     ProhibitIcon,
     EyeClosedIcon,
     ClockCounterClockwiseIcon,
+    PulseIcon,
+    GaugeIcon,
+    BugIcon,
+    TerminalWindowIcon,
+    WebhooksLogoIcon,
+    QueueIcon,
+    TreeStructureIcon,
+    RocketLaunchIcon,
+    BellRingingIcon,
+    ArrowCounterClockwiseIcon,
+    PencilSimpleIcon,
+    TrashIcon,
     type Icon as PhosphorIcon,
     type IconProps as PhosphorIconProps,
     type IconWeight,
@@ -193,6 +205,20 @@ export const AuditIcon = /* @__PURE__ */ icon(ScrollIcon, 'AuditIcon');
 export const AccountIcon = /* @__PURE__ */ icon(UserGearIcon, 'AccountIcon');
 export const HiddenIcon = /* @__PURE__ */ icon(EyeClosedIcon, 'HiddenIcon');
 export const RejectIcon = /* @__PURE__ */ icon(XCircleIcon, 'RejectIcon');
+
+/* Observability */
+export const HealthIcon = /* @__PURE__ */ icon(PulseIcon, 'HealthIcon');
+export const RequestsIcon = /* @__PURE__ */ icon(GaugeIcon, 'RequestsIcon');
+export const ErrorsIcon = /* @__PURE__ */ icon(BugIcon, 'ErrorsIcon');
+export const LogsIcon = /* @__PURE__ */ icon(TerminalWindowIcon, 'LogsIcon');
+export const WebhookIcon = /* @__PURE__ */ icon(WebhooksLogoIcon, 'WebhookIcon');
+export const TasksIcon = /* @__PURE__ */ icon(QueueIcon, 'TasksIcon');
+export const DependenciesIcon = /* @__PURE__ */ icon(TreeStructureIcon, 'DependenciesIcon');
+export const ReleasesIcon = /* @__PURE__ */ icon(RocketLaunchIcon, 'ReleasesIcon');
+export const AlertsIcon = /* @__PURE__ */ icon(BellRingingIcon, 'AlertsIcon');
+export const ReplayIcon = /* @__PURE__ */ icon(ArrowCounterClockwiseIcon, 'ReplayIcon');
+export const EditIcon = /* @__PURE__ */ icon(PencilSimpleIcon, 'EditIcon');
+export const DeleteIcon = /* @__PURE__ */ icon(TrashIcon, 'DeleteIcon');
 
 /* Status and feedback */
 export const InfoIcon = /* @__PURE__ */ icon(PhInfoIcon, 'InfoIcon');
