@@ -91,7 +91,6 @@ import {
     ChartLineUpIcon,
     CurrencyCircleDollarIcon,
     HeartbeatIcon,
-    UsersIcon,
     IdentificationBadgeIcon,
     GridFourIcon,
     FlaskIcon,
@@ -270,7 +269,7 @@ export const AnalyticsIcon = /* @__PURE__ */ icon(ChartLineUpIcon, 'AnalyticsIco
 export const BookingsChartIcon = /* @__PURE__ */ icon(ChartBarIcon, 'BookingsChartIcon');
 export const RevenueIcon = /* @__PURE__ */ icon(CurrencyCircleDollarIcon, 'RevenueIcon');
 export const HealthIcon = /* @__PURE__ */ icon(HeartbeatIcon, 'HealthIcon');
-export const CustomersIcon = /* @__PURE__ */ icon(UsersIcon, 'CustomersIcon');
+export const CustomersIcon = /* @__PURE__ */ icon(PhUsersIcon, 'CustomersIcon');
 export const ProvidersIcon = /* @__PURE__ */ icon(IdentificationBadgeIcon, 'ProvidersIcon');
 export const SupplyDemandIcon = /* @__PURE__ */ icon(GridFourIcon, 'SupplyDemandIcon');
 export const ExplorerIcon = /* @__PURE__ */ icon(FlaskIcon, 'ExplorerIcon');
