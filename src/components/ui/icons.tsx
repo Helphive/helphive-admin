@@ -66,6 +66,13 @@ import {
     ProhibitIcon,
     EyeClosedIcon,
     ClockCounterClockwiseIcon,
+    ShieldWarningIcon,
+    TrayIcon,
+    SlidersHorizontalIcon,
+    ListChecksIcon,
+    HandPalmIcon,
+    GraphIcon,
+    PlayIcon,
     type Icon as PhosphorIcon,
     type IconProps as PhosphorIconProps,
     type IconWeight,
@@ -193,6 +200,15 @@ export const AuditIcon = /* @__PURE__ */ icon(ScrollIcon, 'AuditIcon');
 export const AccountIcon = /* @__PURE__ */ icon(UserGearIcon, 'AccountIcon');
 export const HiddenIcon = /* @__PURE__ */ icon(EyeClosedIcon, 'HiddenIcon');
 export const RejectIcon = /* @__PURE__ */ icon(XCircleIcon, 'RejectIcon');
+
+// Risk
+export const RiskIcon = /* @__PURE__ */ icon(ShieldWarningIcon, 'RiskIcon');
+export const ReviewQueueIcon = /* @__PURE__ */ icon(TrayIcon, 'ReviewQueueIcon');
+export const RulesIcon = /* @__PURE__ */ icon(SlidersHorizontalIcon, 'RulesIcon');
+export const ListsIcon = /* @__PURE__ */ icon(ListChecksIcon, 'ListsIcon');
+export const HoldIcon = /* @__PURE__ */ icon(HandPalmIcon, 'HoldIcon');
+export const LinkedAccountsIcon = /* @__PURE__ */ icon(GraphIcon, 'LinkedAccountsIcon');
+export const RunIcon = /* @__PURE__ */ icon(PlayIcon, 'RunIcon');
 
 /* Status and feedback */
 export const InfoIcon = /* @__PURE__ */ icon(PhInfoIcon, 'InfoIcon');

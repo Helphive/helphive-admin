@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react';
 import type { AppIcon } from '@/components/ui/icons';
 import { AdminsIcon, ApplicationsIcon, AuditIcon, OverviewIcon } from '@/components/ui/icons';
+import { RISK_NAV_ITEMS } from '@/features/risk/navigation';
 import type { Permission } from '@/features/auth/permissions';
 import { PendingApplicationsCount } from '@/features/applications/navCount';
 
@@ -79,6 +80,7 @@ export const NAV_ITEMS: NavItem[] = [
         description: 'Every sign-in, account change and decision',
         keywords: ['history', 'activity', 'log', 'who', 'changes', 'events'],
     },
+    ...RISK_NAV_ITEMS,
 ];
 
 export function sectionLabel(id: SectionId): string {

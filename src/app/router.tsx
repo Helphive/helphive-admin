@@ -7,6 +7,7 @@ import type { RouteHandle } from '@/features/shell/crumbContext';
 import RouteError from '@/features/system/RouteError';
 import NotFoundPage from '@/features/system/NotFoundPage';
 import StartPage from '@/features/system/StartPage';
+import { riskRoutes } from '@/features/risk/routes';
 
 // Pages load on demand; the layout shows a skeleton while a page's code arrives.
 const SignInPage = lazy(() => import('@/features/auth/SignInPage'));
@@ -92,6 +93,7 @@ export const router = createBrowserRouter([
                     </RequirePermission>
                 ),
             },
+            ...riskRoutes,
             { path: '*', handle: handle('Not found'), element: <NotFoundPage /> },
         ],
     },
