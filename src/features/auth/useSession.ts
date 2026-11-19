@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { endSession } from '@/lib/api';
+import { markSignedOut } from './session';
 import { useGetRolesQuery, useLogoutAllMutation, useLogoutMutation } from './authApi';
 import { DEMO_DISABLED_REASON, FALLBACK_ROLE_LABELS, type Permission } from './permissions';
 
@@ -35,12 +36,21 @@ export function useSession() {
     const [logoutAll] = useLogoutAllMutation();
 
     const signOut = useCallback(async () => {
-        try {
-            await logout().unwrap();
-        } catch {
-            // The session ends here either way; the server forgets it when the token expires.
+        // The server has to end the session too, or the refresh cookie could resume it. Try twice; a 401 means
+        // the session is already gone.
+        let confirmed = false;
+        for (let attempt = 0; attempt < 2 && !confirmed; attempt++) {
+            try {
+                await logout().unwrap();
+                confirmed = true;
+            } catch (error) {
+                if ((error as { status?: unknown })?.status === 401) confirmed = true;
+                else if (attempt === 0) await new Promise((resolve) => setTimeout(resolve, 600));
+            }
         }
-        endSession(dispatch, 'signed-out');
+        // Either way this browser will not resume the session; an unconfirmed sign-out is finished on next load.
+        markSignedOut(confirmed);
+        endSession(dispatch, confirmed ? 'signed-out' : 'signed-out-unconfirmed');
     }, [logout, dispatch]);
 
     /** Ends every session of this admin. Rejects (and keeps this session) if the API refuses. */

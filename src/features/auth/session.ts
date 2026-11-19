@@ -15,7 +15,52 @@ const DEV_KEY = 'helphive-admin.dev-token';
 // Tokens older consoles kept in localStorage; removed on load so they cannot linger.
 const LEGACY_KEYS = ['helphive-admin.session', 'serviceToken'];
 
+// Set when the admin signs out, so a reload does not quietly resume the session from the refresh cookie.
+// "pending" means the server could not be told; the next load finishes the sign-out before anything else.
+const SIGNED_OUT_KEY = 'helphive-admin.signed-out';
+type SignedOutState = 'confirmed' | 'pending';
+
 let accessToken: string | null = null;
+
+function signedOutState(): SignedOutState | null {
+    try {
+        const value = localStorage.getItem(SIGNED_OUT_KEY);
+        return value === 'confirmed' || value === 'pending' ? value : null;
+    } catch {
+        return null;
+    }
+}
+
+/** Records a sign-out. `confirmed` is false when the server did not acknowledge it. */
+export function markSignedOut(confirmed: boolean) {
+    try {
+        localStorage.setItem(SIGNED_OUT_KEY, confirmed ? 'confirmed' : 'pending');
+    } catch {
+        // Storage blocked: the server-side sign-out is the only protection.
+    }
+}
+
+function clearSignedOut() {
+    try {
+        localStorage.removeItem(SIGNED_OUT_KEY);
+    } catch {
+        // Nothing stored.
+    }
+}
+
+/** Ends the server session using only the refresh cookie. True when the session is known to be gone. */
+async function logoutWithCookie(): Promise<boolean> {
+    try {
+        const res = await fetch(`${API_URL}/admin/logout`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { ...CLIENT_HEADERS },
+        });
+        return res.ok || res.status === 401;
+    } catch {
+        return false;
+    }
+}
 
 function devStorage(): Storage | null {
     if (!import.meta.env.DEV) return null;
@@ -38,6 +83,8 @@ export function getAccessToken(): string | null {
 
 export function setAccessToken(token: string) {
     accessToken = token;
+    // A new token only arrives from a sign-in or a permitted refresh, so the signed-out mark is over.
+    clearSignedOut();
     try {
         devStorage()?.setItem(DEV_KEY, token);
     } catch {
@@ -78,6 +125,13 @@ let refreshing: Promise<RefreshResult> | null = null;
  */
 export function refreshSession(): Promise<RefreshResult> {
     refreshing ??= (async (): Promise<RefreshResult> => {
+        // After a sign-out the cookie must not bring the session back. If the server never heard about the
+        // sign-out, tell it now; either way there is no session to resume until the admin signs in again.
+        const signedOut = signedOutState();
+        if (signedOut) {
+            if (signedOut === 'pending' && (await logoutWithCookie())) markSignedOut(true);
+            return { ok: false, reason: 'ended' };
+        }
         try {
             const res = await fetch(`${API_URL}/admin/refresh`, {
                 method: 'POST',

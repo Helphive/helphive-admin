@@ -61,4 +61,5 @@ export interface RolesResponse {
 }
 
 /** Why the last session ended, shown on the sign-in page. */
-export type SignOutReason = 'expired' | 'forbidden' | 'signed-out' | 'signed-out-everywhere';
+export type SignOutReason =
+    'expired' | 'forbidden' | 'signed-out' | 'signed-out-unconfirmed' | 'signed-out-everywhere';

@@ -35,6 +35,10 @@ const NOTICES: Record<SignOutReason, { tone: 'info' | 'warning'; text: string }>
         text: 'The API refused this account. Sign in with an admin account.',
     },
     'signed-out': { tone: 'info', text: 'You signed out.' },
+    'signed-out-unconfirmed': {
+        tone: 'warning',
+        text: 'You are signed out in this browser, but the server could not be reached to end the session. It will be ended the next time this page loads. To be sure, sign in and choose "Sign out everywhere".',
+    },
     'signed-out-everywhere': {
         tone: 'info',
         text: 'You signed out of every session, on every device.',
