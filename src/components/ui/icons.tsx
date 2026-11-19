@@ -66,6 +66,12 @@ import {
     ProhibitIcon,
     EyeClosedIcon,
     ClockCounterClockwiseIcon,
+    ScalesIcon,
+    GavelIcon,
+    LifebuoyIcon,
+    GearSixIcon,
+    MegaphoneIcon,
+    FlagBannerIcon,
     type Icon as PhosphorIcon,
     type IconProps as PhosphorIconProps,
     type IconWeight,
@@ -209,3 +215,11 @@ export const CheckboxIndeterminateIcon = /* @__PURE__ */ icon(
 );
 export const RadioIcon = /* @__PURE__ */ icon(CircleIcon, 'RadioIcon');
 export const RadioCheckedIcon = /* @__PURE__ */ icon(RadioButtonIcon, 'RadioCheckedIcon');
+
+/* Finance, support and platform */
+export const ReconcileIcon = /* @__PURE__ */ icon(ScalesIcon, 'ReconcileIcon');
+export const DisputeIcon = /* @__PURE__ */ icon(GavelIcon, 'DisputeIcon');
+export const CasesIcon = /* @__PURE__ */ icon(LifebuoyIcon, 'CasesIcon');
+export const SettingsIcon = /* @__PURE__ */ icon(GearSixIcon, 'SettingsIcon');
+export const NotifyIcon = /* @__PURE__ */ icon(MegaphoneIcon, 'NotifyIcon');
+export const BannerIcon = /* @__PURE__ */ icon(FlagBannerIcon, 'BannerIcon');

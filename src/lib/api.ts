@@ -87,7 +87,21 @@ const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> =
 export const api = createApi({
     reducerPath: 'api',
     baseQuery,
-    tagTypes: ['Account', 'Applications', 'Mfa', 'Sessions', 'Admins', 'Audit', 'Roles'],
+    tagTypes: [
+        'Account',
+        'Applications',
+        'Mfa',
+        'Sessions',
+        'Admins',
+        'Audit',
+        'Roles',
+        // Finance, support and platform module.
+        'Finance',
+        'Disputes',
+        'Settings',
+        'Cases',
+        'Notifications',
+    ],
     // Admin data goes stale quickly; refetch when someone comes back to the tab.
     refetchOnFocus: true,
     refetchOnReconnect: true,
