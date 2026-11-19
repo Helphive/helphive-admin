@@ -48,15 +48,15 @@ function clearSignedOut() {
     }
 }
 
-/** Ends the server session using only the refresh cookie. True when the session is known to be gone. */
-async function logoutWithCookie(): Promise<boolean> {
+/** Ends the server session using only the refresh cookie. True only when the server confirms it (2xx). */
+export async function logoutWithCookie(): Promise<boolean> {
     try {
         const res = await fetch(`${API_URL}/admin/logout`, {
             method: 'POST',
             credentials: 'include',
             headers: { ...CLIENT_HEADERS },
         });
-        return res.ok || res.status === 401;
+        return res.ok;
     } catch {
         return false;
     }

@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { endSession } from '@/lib/api';
-import { markSignedOut } from './session';
+import { logoutWithCookie, markSignedOut } from './session';
 import { useGetRolesQuery, useLogoutAllMutation, useLogoutMutation } from './authApi';
 import { DEMO_DISABLED_REASON, FALLBACK_ROLE_LABELS, type Permission } from './permissions';
 
@@ -36,19 +36,21 @@ export function useSession() {
     const [logoutAll] = useLogoutAllMutation();
 
     const signOut = useCallback(async () => {
-        // The server has to end the session too, or the refresh cookie could resume it. Try twice; a 401 means
-        // the session is already gone.
+        // The server has to end the session too, or the refresh cookie could resume it. Only an explicit success
+        // counts as confirmation: try the normal sign-out, then the cookie-only one, then once more.
         let confirmed = false;
         for (let attempt = 0; attempt < 2 && !confirmed; attempt++) {
             try {
                 await logout().unwrap();
                 confirmed = true;
-            } catch (error) {
-                if ((error as { status?: unknown })?.status === 401) confirmed = true;
-                else if (attempt === 0) await new Promise((resolve) => setTimeout(resolve, 600));
+            } catch {
+                confirmed = await logoutWithCookie();
+                if (!confirmed && attempt === 0)
+                    await new Promise((resolve) => setTimeout(resolve, 600));
             }
         }
-        // Either way this browser will not resume the session; an unconfirmed sign-out is finished on next load.
+        // Either way this browser will not resume the session; an unconfirmed sign-out is retried on every load
+        // until the server confirms it or the admin signs in again.
         markSignedOut(confirmed);
         endSession(dispatch, confirmed ? 'signed-out' : 'signed-out-unconfirmed');
     }, [logout, dispatch]);

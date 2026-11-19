@@ -37,7 +37,7 @@ const NOTICES: Record<SignOutReason, { tone: 'info' | 'warning'; text: string }>
     'signed-out': { tone: 'info', text: 'You signed out.' },
     'signed-out-unconfirmed': {
         tone: 'warning',
-        text: 'You are signed out in this browser, but the server could not be reached to end the session. It will be ended the next time this page loads. To be sure, sign in and choose "Sign out everywhere".',
+        text: 'You are signed out in this browser, but the server did not confirm that the session ended. This page tries again each time it loads. To be sure, sign in and choose "Sign out everywhere".',
     },
     'signed-out-everywhere': {
         tone: 'info',
