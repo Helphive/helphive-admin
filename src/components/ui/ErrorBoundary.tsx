@@ -1,6 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { Box, Button } from '@mui/material';
 import ErrorState from './ErrorState';
+import { reportError } from '@/features/observability/reporter';
 
 interface ErrorBoundaryProps {
     children: ReactNode;
@@ -24,6 +25,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
 
     componentDidCatch(error: Error, info: ErrorInfo) {
         console.error('Unhandled UI error', error, info.componentStack);
+        reportError(error, true);
     }
 
     componentDidUpdate(prev: ErrorBoundaryProps) {

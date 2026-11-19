@@ -110,6 +110,7 @@ export const api = createApi({
         'Settings',
         'Cases',
         'Notifications',
+        'Observability',
     ],
     // Admin data goes stale quickly; refetch when someone comes back to the tab.
     refetchOnFocus: true,

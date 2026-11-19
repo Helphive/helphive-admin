@@ -109,6 +109,16 @@ import {
     GearSixIcon,
     MegaphoneIcon,
     FlagBannerIcon,
+    PulseIcon,
+    GaugeIcon,
+    BugIcon,
+    TerminalWindowIcon,
+    WebhooksLogoIcon,
+    QueueIcon,
+    TreeStructureIcon,
+    RocketLaunchIcon,
+    BellRingingIcon,
+    ArrowCounterClockwiseIcon,
     type Icon as PhosphorIcon,
     type IconProps as PhosphorIconProps,
     type IconWeight,
@@ -268,6 +278,17 @@ export const ListsIcon = /* @__PURE__ */ icon(ListChecksIcon, 'ListsIcon');
 export const HoldIcon = /* @__PURE__ */ icon(HandPalmIcon, 'HoldIcon');
 export const LinkedAccountsIcon = /* @__PURE__ */ icon(GraphIcon, 'LinkedAccountsIcon');
 export const RunIcon = /* @__PURE__ */ icon(PlayIcon, 'RunIcon');
+/* Observability */
+export const SystemHealthIcon = /* @__PURE__ */ icon(PulseIcon, 'SystemHealthIcon');
+export const RequestsIcon = /* @__PURE__ */ icon(GaugeIcon, 'RequestsIcon');
+export const ErrorsIcon = /* @__PURE__ */ icon(BugIcon, 'ErrorsIcon');
+export const LogsIcon = /* @__PURE__ */ icon(TerminalWindowIcon, 'LogsIcon');
+export const WebhookIcon = /* @__PURE__ */ icon(WebhooksLogoIcon, 'WebhookIcon');
+export const TasksIcon = /* @__PURE__ */ icon(QueueIcon, 'TasksIcon');
+export const DependenciesIcon = /* @__PURE__ */ icon(TreeStructureIcon, 'DependenciesIcon');
+export const ReleasesIcon = /* @__PURE__ */ icon(RocketLaunchIcon, 'ReleasesIcon');
+export const AlertsIcon = /* @__PURE__ */ icon(BellRingingIcon, 'AlertsIcon');
+export const ReplayIcon = /* @__PURE__ */ icon(ArrowCounterClockwiseIcon, 'ReplayIcon');
 
 /* Status and feedback */
 export const InfoIcon = /* @__PURE__ */ icon(PhInfoIcon, 'InfoIcon');
