@@ -6,6 +6,9 @@ export const API_URL =
 
 export const BUILD = (import.meta.env.VITE_APP_BUILD ?? '').slice(0, 7) || 'local';
 
+/** Sent with every API call so the server's logs, events and audit entries say which client acted. */
+export const CLIENT_HEADERS = { 'X-App-Platform': 'admin', 'X-App-Version': BUILD } as const;
+
 export type AppEnvironment = 'production' | 'preview' | 'local';
 
 /** Where the console itself is served from. Firebase preview channels contain "--". */

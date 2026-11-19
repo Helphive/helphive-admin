@@ -1,5 +1,5 @@
 import { Suspense, useCallback, useEffect, useState } from 'react';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
     Avatar,
     Box,
@@ -17,8 +17,15 @@ import {
 } from '@mui/material';
 import { NAV_ITEMS, SECTIONS, type NavItem } from '@/app/navigation';
 import { ErrorBoundary, Logo, PageSkeleton, StatusPill } from '@/components/ui';
-import { CloseIcon, LogoutIcon, MenuIcon, SearchIcon, SidebarIcon } from '@/components/ui/icons';
-import { ROLE_LABELS } from '@/features/auth/permissions';
+import {
+    AccountIcon,
+    CloseIcon,
+    LogoutIcon,
+    MenuIcon,
+    SearchIcon,
+    SidebarIcon,
+} from '@/components/ui/icons';
+import { DemoBanner } from '@/features/auth/demo';
 import { useSession } from '@/features/auth/useSession';
 import { BUILD } from '@/lib/env';
 import { color, font, hairline, layout, radius } from '@/theme/tokens';
@@ -253,7 +260,8 @@ function Sidebar({ rail, onToggle }: { rail: boolean; onToggle: () => void }) {
 /* ---------- Top bar ---------- */
 
 function AccountMenu() {
-    const { admin, name, roles, signOut } = useSession();
+    const { admin, name, roleLabel, demo, signOut } = useSession();
+    const navigate = useNavigate();
     const [anchor, setAnchor] = useState<HTMLElement | null>(null);
     const initials =
         `${admin?.firstName?.[0] ?? ''}${admin?.lastName?.[0] ?? ''}`.toUpperCase() || 'A';
@@ -290,19 +298,28 @@ function AccountMenu() {
                     <Typography variant="caption" component="p" noWrap>
                         {admin?.email}
                     </Typography>
-                    <Box sx={{ display: 'flex', gap: 0.5, mt: 1, flexWrap: 'wrap' }}>
-                        {roles.map((r) => (
-                            <StatusPill key={r} tone="grey">
-                                {ROLE_LABELS[r]}
-                            </StatusPill>
-                        ))}
-                    </Box>
+                    {roleLabel && (
+                        <Box sx={{ display: 'flex', gap: 0.5, mt: 1, flexWrap: 'wrap' }}>
+                            <StatusPill tone={demo ? 'amber' : 'grey'}>{roleLabel}</StatusPill>
+                        </Box>
+                    )}
                 </Box>
                 <Divider sx={{ my: 0.5 }} />
                 <MenuItem
                     onClick={() => {
                         setAnchor(null);
-                        signOut();
+                        navigate('/account');
+                    }}
+                >
+                    <ListItemIcon>
+                        <AccountIcon />
+                    </ListItemIcon>
+                    Your account
+                </MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        setAnchor(null);
+                        void signOut();
                     }}
                 >
                     <ListItemIcon>
@@ -487,6 +504,7 @@ export default function ConsoleLayout() {
                         </Box>
                         <AccountMenu />
                     </Box>
+                    <DemoBanner />
 
                     <Box
                         component="main"

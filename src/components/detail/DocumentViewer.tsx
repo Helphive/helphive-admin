@@ -1,4 +1,4 @@
-import { useEffect, useState, type KeyboardEvent } from 'react';
+import { useEffect, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { Box, Button, ButtonBase, IconButton, Tooltip, Typography } from '@mui/material';
 import { EmptyState, ErrorState } from '@/components/ui';
 import {
@@ -26,6 +26,11 @@ export interface DocumentViewerProps {
     onChange?: (key: string) => void;
     /** Stage height; a number, CSS string or breakpoint object ({ xs: 360, md: 640 }). */
     height?: number | string | Partial<Record<'xs' | 'sm' | 'md' | 'lg' | 'xl', number | string>>;
+    /**
+     * Shown for a document whose URL is null (the API sent no link, as for the demo admin).
+     * Defaults to a plain "no file" state.
+     */
+    missing?: ReactNode;
 }
 
 const KIND_ICON = { image: PhotoIcon, pdf: PdfIcon, other: DocumentIcon, blocked: DocumentIcon };
@@ -45,6 +50,7 @@ export default function DocumentViewer({
     initialKey,
     onChange,
     height = 560,
+    missing,
 }: DocumentViewerProps) {
     const [key, setKey] = useState(initialKey ?? documents[0]?.key);
     const [zoom, setZoom] = useState(1);
@@ -57,6 +63,7 @@ export default function DocumentViewer({
     const doc = documents[index];
     const kind = doc ? documentKind(doc) : 'blocked';
     const url = doc ? safeDocumentUrl(doc.url) : null;
+    const absent = doc !== undefined && (doc.url === null || doc.url === '');
 
     useEffect(() => {
         setZoom(1);
@@ -155,9 +162,11 @@ export default function DocumentViewer({
             >
                 <Typography variant="body2" sx={{ fontWeight: 700, mr: 'auto' }}>
                     {doc.description ?? doc.label}
-                    <Box component="span" sx={{ color: color.ink500, fontWeight: 600, ml: 1 }}>
-                        {KIND_LABEL[kind]}
-                    </Box>
+                    {!absent && (
+                        <Box component="span" sx={{ color: color.ink500, fontWeight: 600, ml: 1 }}>
+                            {KIND_LABEL[kind]}
+                        </Box>
+                    )}
                 </Typography>
                 {imageTools && (
                     <>
@@ -259,7 +268,16 @@ export default function DocumentViewer({
                     '&:focus-visible': { outlineOffset: -2 },
                 }}
             >
-                {kind === 'blocked' || !url ? (
+                {absent ? (
+                    (missing ?? (
+                        <EmptyState
+                            bare
+                            icon={<DocumentIcon />}
+                            title="No file"
+                            description="The API sent no link for this document."
+                        />
+                    ))
+                ) : kind === 'blocked' || !url ? (
                     <ErrorState
                         bare
                         title="This file cannot be shown"

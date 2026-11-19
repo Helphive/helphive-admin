@@ -5,7 +5,7 @@ import { titleCase } from '@/lib/format';
 
 /**
  * A provider application as the API returns it. The four file fields (`id`, `dbs`, `resume`,
- * `profile`) arrive as signed Cloud Storage URLs that stay valid for 7 days.
+ * `profile`) arrive as signed Cloud Storage URLs (valid for an hour), or null for the demo admin.
  */
 export interface RawApplication {
     _id: string;
@@ -17,15 +17,28 @@ export interface RawApplication {
     state: string;
     city: string;
     street: string;
-    id: string;
-    dbs: string;
-    resume: string;
-    profile: string;
+    id: string | null;
+    dbs: string | null;
+    resume: string | null;
+    profile: string | null;
     createdAt: string;
     updatedAt?: string;
     status: string;
     jobTypes?: Partial<Record<ServiceKey, boolean>>;
     rejectReason?: string;
+    /** Who decided and when (absent on applications decided before reviewers were recorded). */
+    reviewedBy?: string | null;
+    reviewedAt?: string | null;
+    /** Every decision, oldest first. */
+    decisions?: RawDecision[];
+}
+
+export interface RawDecision {
+    status: string;
+    at: string;
+    by: string | null;
+    byEmail: string | null;
+    reason: string | null;
 }
 
 export type ServiceKey = 'roomAttendant' | 'publicAreaAttendant' | 'linenPorter';
@@ -51,7 +64,17 @@ export interface ApplicationDocument {
     key: DocumentKey;
     label: string;
     description: string;
-    url: string;
+    /** Null when the API sent no link (the demo admin never gets document links). */
+    url: string | null;
+}
+
+export interface Decision {
+    status: ApplicationStatus;
+    at: string;
+    /** Admin id of the reviewer. */
+    by: string | null;
+    byEmail: string | null;
+    reason: string;
 }
 
 export interface Application {
@@ -70,9 +93,14 @@ export interface Application {
     services: ServiceKey[];
     status: ApplicationStatus;
     rejectReason: string;
-    /** When the applicant submitted. The API stores no separate decision time. */
+    /** When the applicant submitted. */
     submittedAt: string;
-    photoUrl: string;
+    /** When it was decided and by whom; null on older applications. */
+    reviewedAt: string | null;
+    reviewedBy: string | null;
+    reviewedByEmail: string | null;
+    decisions: Decision[];
+    photoUrl: string | null;
     documents: ApplicationDocument[];
     /** The record as the API sent it, for the raw view. */
     raw: RawApplication;
@@ -86,6 +114,13 @@ export function toApplication(raw: RawApplication): Application {
     const lastName = (raw.lastName ?? '').trim();
     const city = titleCase(raw.city);
     const country = titleCase(raw.country);
+    const decisions: Decision[] = (Array.isArray(raw.decisions) ? raw.decisions : []).map((d) => ({
+        status: asStatus(d.status),
+        at: d.at,
+        by: d.by ?? null,
+        byEmail: d.byEmail ?? null,
+        reason: d.reason ?? '',
+    }));
     return {
         id: raw._id,
         firstName,
@@ -102,6 +137,10 @@ export function toApplication(raw: RawApplication): Application {
         status: asStatus(raw.status),
         rejectReason: raw.rejectReason ?? '',
         submittedAt: raw.createdAt,
+        reviewedAt: raw.reviewedAt ?? null,
+        reviewedBy: raw.reviewedBy ?? null,
+        reviewedByEmail: decisions.at(-1)?.byEmail ?? null,
+        decisions,
         photoUrl: raw.profile,
         raw,
         documents: [

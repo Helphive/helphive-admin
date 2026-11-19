@@ -10,7 +10,7 @@ import { STATUS_META } from './model';
  * once the person has typed something (records stay out of the empty palette).
  */
 export function useApplicationCommands(query: string) {
-    const allowed = useCan('applications.view');
+    const allowed = useCan('applications.read');
     const { all, isLoading } = useAllApplications();
 
     return useMemo(() => {

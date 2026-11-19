@@ -19,7 +19,8 @@ import { Panel } from '@/components/ui';
 import { DiffView } from '@/components/detail';
 import { ApproveIcon, RejectIcon } from '@/components/ui/icons';
 import { useToast } from '@/components/feedback/toastContext';
-import RequirePermission from '@/features/auth/RequirePermission';
+import GatedButton from '@/features/auth/GatedButton';
+import { formatDateTime } from '@/lib/format';
 import { getErrorMessage } from '@/lib/api';
 import { color, font, hairline, radius } from '@/theme/tokens';
 import { useDecideApplicationMutation } from './api';
@@ -63,7 +64,6 @@ function DecisionDialog({
     const base = preset === OTHER ? custom.trim() : preset;
     const message = approving ? '' : [base, details.trim()].filter(Boolean).join('. ');
     const missing = !approving && !base;
-    const reviewed = application.status !== 'pending';
 
     const confirm = async () => {
         setTried(true);
@@ -93,9 +93,8 @@ function DecisionDialog({
                 <DialogContentText id="decision-description" sx={{ mb: 2 }}>
                     {approving
                         ? `${application.firstName} becomes a provider and can accept ${serviceSentence(application)} straight away. HelpHive copies their photo to their profile, saves their contact details and sends them a notification that they were approved.`
-                        : `${application.firstName} cannot accept jobs. HelpHive sends them a notification with the reason below, so write it for the applicant.`}
-                    {reviewed &&
-                        ` This replaces the earlier decision (${STATUS_META[application.status].label.toLowerCase()}).`}
+                        : `${application.firstName} cannot accept jobs. HelpHive sends them a notification with the reason below, so write it for the applicant.`}{' '}
+                    A decision cannot be changed afterwards.
                 </DialogContentText>
 
                 {!approving && (
@@ -219,8 +218,9 @@ function DecisionDialog({
 }
 
 /**
- * Side panel on an application: approve or reject a waiting application, or see (and, if
- * needed, change) the decision on a reviewed one. Every decision goes through a confirmation.
+ * Side panel on an application: approve or reject a waiting application (each through a
+ * confirmation), or see who decided a reviewed one and when. The API accepts one decision per
+ * application, so a reviewed application offers no change.
  */
 export default function DecisionPanel({
     application,
@@ -231,63 +231,69 @@ export default function DecisionPanel({
 }) {
     const [open, setOpen] = useState<Decision | null>(null);
     const pending = application.status === 'pending';
+    const last = application.decisions.at(-1);
+    const decidedAt = application.reviewedAt ?? last?.at ?? null;
+    const by = last?.byEmail ?? application.reviewedByEmail;
 
     return (
         <Panel title="Decision">
             {pending ? (
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    Check the photo, ID, DBS certificate and CV before deciding. The applicant is
-                    told either way.
-                </Typography>
-            ) : (
-                <Box sx={{ mb: 2, display: 'grid', gap: 1 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <ApplicationStatusPill status={application.status} size="md" />
-                    </Box>
-                    {application.status === 'rejected' && (
-                        <Typography variant="body2">
-                            Reason given: {application.rejectReason || 'none recorded'}
-                        </Typography>
-                    )}
-                    <Typography variant="body2" color="text.secondary">
-                        The API does not record when this decision was made or by whom.
+                <>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                        Check the photo, ID, DBS certificate and CV before deciding. The applicant
+                        is told either way.
                     </Typography>
-                </Box>
-            )}
-            <RequirePermission permission="applications.decide" fallback={null}>
-                {pending ? (
                     <Box sx={{ display: 'grid', gap: 1 }}>
-                        <Button
+                        <GatedButton
+                            permission="applications.review"
                             variant="contained"
                             startIcon={<ApproveIcon />}
                             onClick={() => setOpen('approved')}
+                            fullWidth
                         >
                             Approve
-                        </Button>
-                        <Button
+                        </GatedButton>
+                        <GatedButton
+                            permission="applications.review"
                             variant="outlined"
                             color="error"
                             startIcon={<RejectIcon />}
                             onClick={() => setOpen('rejected')}
                             sx={{ borderColor: color.red200, color: color.red700 }}
+                            fullWidth
+                            showReason
                         >
                             Reject
-                        </Button>
+                        </GatedButton>
                     </Box>
-                ) : (
-                    <Button
-                        variant="outlined"
-                        fullWidth
-                        onClick={() =>
-                            setOpen(application.status === 'approved' ? 'rejected' : 'approved')
-                        }
-                    >
-                        {application.status === 'approved'
-                            ? 'Change to rejected'
-                            : 'Change to approved'}
-                    </Button>
-                )}
-            </RequirePermission>
+                </>
+            ) : (
+                <Box sx={{ display: 'grid', gap: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <ApplicationStatusPill status={application.status} size="md" />
+                    </Box>
+                    {decidedAt || by ? (
+                        <Typography variant="body2">
+                            {STATUS_META[application.status].label}
+                            {by ? ` by ${by}` : ''}
+                            {decidedAt ? ` on ${formatDateTime(decidedAt)}` : ''}.
+                        </Typography>
+                    ) : (
+                        <Typography variant="body2" color="text.secondary">
+                            Decided before the console recorded reviewers, so who decided and when
+                            is not known.
+                        </Typography>
+                    )}
+                    {application.status === 'rejected' && (
+                        <Typography variant="body2">
+                            Reason given: {application.rejectReason || 'none recorded'}
+                        </Typography>
+                    )}
+                    <Typography variant="caption" component="p">
+                        A decision is final: the API does not accept a second one.
+                    </Typography>
+                </Box>
+            )}
             {open && (
                 <DecisionDialog
                     application={application}

@@ -1,31 +1,52 @@
-// Permissions are named capabilities; roles are bundles of them. Pages and navigation ask
-// `can(permission)`, never about roles, so switching real roles on later only changes the map below.
+// Permissions are named capabilities; the API decides which ones the signed-in admin has and sends
+// the list with sign-in, refresh and GET /admin/account. Pages, routes and navigation ask
+// `can(permission)`; never check a role in the console.
 //
-// Today the API knows two flags on an admin (roles.admin, roles.superAdmin) and enforces nothing
-// finer, so every role is granted every permission.
+// The names below mirror helphive-backend config/adminPermissions.ts. They exist here only so a
+// typo is a type error; the grants themselves always come from the API.
 
-export const PERMISSIONS = ['overview.view', 'applications.view', 'applications.decide'] as const;
+export const PERMISSIONS = [
+    'account.self',
+    'applications.read',
+    'applications.review',
+    'users.read',
+    'users.manage',
+    'bookings.read',
+    'bookings.manage',
+    'payments.read',
+    'payments.refund',
+    'payouts.manage',
+    'analytics.read',
+    'observability.read',
+    'risk.read',
+    'risk.manage',
+    'support.read',
+    'support.manage',
+    'settings.manage',
+    'admins.manage',
+    'audit.read',
+] as const;
 
 export type Permission = (typeof PERMISSIONS)[number];
 
-export type Role = 'admin' | 'superAdmin';
+/** Roles an admin can be given in the console (the demo role follows the demo email, not a choice). */
+export const ASSIGNABLE_ROLES = [
+    'superAdmin',
+    'operations',
+    'finance',
+    'support',
+    'analyst',
+] as const;
 
-export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
-    admin: PERMISSIONS,
-    superAdmin: PERMISSIONS,
-};
-
-export const ROLE_LABELS: Record<Role, string> = {
-    admin: 'Admin',
+/** Only for when GET /admin/roles has not answered yet; the API's labels win. */
+export const FALLBACK_ROLE_LABELS: Record<string, string> = {
     superAdmin: 'Super admin',
+    operations: 'Operations',
+    finance: 'Finance',
+    support: 'Support',
+    analyst: 'Analyst',
+    demo: 'Demo',
 };
 
-/** Role names from the admin record's `roles` flags. */
-export function rolesOf(flags: Partial<Record<Role, boolean>> | undefined): Role[] {
-    if (!flags) return [];
-    return (Object.keys(ROLE_PERMISSIONS) as Role[]).filter((r) => flags[r]);
-}
-
-export function permissionsFor(roles: readonly Role[]): Set<Permission> {
-    return new Set(roles.flatMap((r) => ROLE_PERMISSIONS[r]));
-}
+/** The explanation shown on any write action while the demo admin is signed in. */
+export const DEMO_DISABLED_REASON = 'Turned off in the demo: it is read-only.';

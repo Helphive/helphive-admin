@@ -42,9 +42,12 @@ export function urlExtension(url: string): string {
     }
 }
 
+/** The demo admin's masking character; a masked value is shown as text, never turned into a link. */
+export const isMasked = (v: unknown) => typeof v === 'string' && v.includes('•');
+
 /** A mailto: link for a plain email address, or null. */
 export function mailtoHref(email: unknown): string | null {
-    if (typeof email !== 'string') return null;
+    if (typeof email !== 'string' || isMasked(email)) return null;
     const e = email.trim();
     return /^[^\s@<>()[\]\\,;:"?&#]+@[^\s@<>()[\]\\,;:"?&#]+\.[^\s@<>()[\]\\,;:"?&#]+$/.test(e)
         ? `mailto:${e}`
@@ -53,7 +56,7 @@ export function mailtoHref(email: unknown): string | null {
 
 /** A tel: link with only digits and a leading plus, or null when too short to be a number. */
 export function telHref(phone: unknown): string | null {
-    if (typeof phone !== 'string') return null;
+    if (typeof phone !== 'string' || isMasked(phone)) return null;
     const digits = phone.replace(/[^\d+]/g, '').replace(/(?!^)\+/g, '');
     return digits.replace('+', '').length >= 6 ? `tel:${digits}` : null;
 }

@@ -4,7 +4,7 @@ import { Box, Dialog, InputBase, Typography } from '@mui/material';
 import { NAV_ITEMS } from '@/app/navigation';
 import { useApplicationCommands } from '@/features/applications/commands';
 import { useSession } from '@/features/auth/useSession';
-import { LogoutIcon, SearchIcon } from '@/components/ui/icons';
+import { AccountIcon, LogoutIcon, SearchIcon } from '@/components/ui/icons';
 import { color, font, hairline, radius } from '@/theme/tokens';
 import { filterCommands, type Command } from './commands';
 import { shortcutLabel } from './shortcut';
@@ -55,12 +55,21 @@ function Palette({ onClose }: { onClose: () => void }) {
         });
         const actions: Command[] = [
             {
+                id: 'action:account',
+                group: 'Account',
+                label: 'Your account',
+                hint: 'Two-step sign-in, password and sessions',
+                icon: <AccountIcon />,
+                keywords: ['security', 'two-step', '2fa', 'mfa', 'password', 'sessions', 'profile'],
+                to: '/account',
+            },
+            {
                 id: 'action:sign-out',
                 group: 'Account',
                 label: 'Sign out',
                 icon: <LogoutIcon />,
                 keywords: ['log out', 'logout'],
-                run: signOut,
+                run: () => void signOut(),
             },
         ];
         return [...pages, ...records.views, ...records.items, ...actions];

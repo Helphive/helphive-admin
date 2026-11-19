@@ -30,7 +30,7 @@ export const applicationsApi = api.injectEndpoints({
                 method: 'POST',
                 body: { providerAccountRequestId: id, status: decision, message },
             }),
-            invalidatesTags: ['Applications'],
+            invalidatesTags: ['Applications', 'Audit'],
         }),
     }),
 });

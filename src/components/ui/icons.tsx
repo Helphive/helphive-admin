@@ -55,6 +55,17 @@ import {
     WarningCircleIcon,
     WarningIcon as PhWarningIcon,
     XIcon,
+    ShieldCheckIcon,
+    ShieldSlashIcon,
+    DevicesIcon,
+    PasswordIcon as PhPasswordIcon,
+    UsersThreeIcon,
+    ScrollIcon,
+    UserGearIcon,
+    PlusIcon,
+    ProhibitIcon,
+    EyeClosedIcon,
+    ClockCounterClockwiseIcon,
     type Icon as PhosphorIcon,
     type IconProps as PhosphorIconProps,
     type IconWeight,
@@ -168,6 +179,19 @@ export const RotateIcon = /* @__PURE__ */ icon(ArrowsClockwiseIcon, 'RotateIcon'
 export const FitIcon = /* @__PURE__ */ icon(ArrowsOutSimpleIcon, 'FitIcon');
 export const PdfIcon = /* @__PURE__ */ icon(FilePdfIcon, 'PdfIcon');
 export const ApproveIcon = /* @__PURE__ */ icon(CheckCircleIcon, 'ApproveIcon');
+export const AddIcon = /* @__PURE__ */ icon(PlusIcon, 'AddIcon');
+export const DisableIcon = /* @__PURE__ */ icon(ProhibitIcon, 'DisableIcon');
+export const HistoryIcon = /* @__PURE__ */ icon(ClockCounterClockwiseIcon, 'HistoryIcon');
+
+/* Security and accounts */
+export const TwoStepIcon = /* @__PURE__ */ icon(ShieldCheckIcon, 'TwoStepIcon');
+export const TwoStepOffIcon = /* @__PURE__ */ icon(ShieldSlashIcon, 'TwoStepOffIcon');
+export const SessionsIcon = /* @__PURE__ */ icon(DevicesIcon, 'SessionsIcon');
+export const PasswordIcon = /* @__PURE__ */ icon(PhPasswordIcon, 'PasswordIcon');
+export const AdminsIcon = /* @__PURE__ */ icon(UsersThreeIcon, 'AdminsIcon');
+export const AuditIcon = /* @__PURE__ */ icon(ScrollIcon, 'AuditIcon');
+export const AccountIcon = /* @__PURE__ */ icon(UserGearIcon, 'AccountIcon');
+export const HiddenIcon = /* @__PURE__ */ icon(EyeClosedIcon, 'HiddenIcon');
 export const RejectIcon = /* @__PURE__ */ icon(XCircleIcon, 'RejectIcon');
 
 /* Status and feedback */

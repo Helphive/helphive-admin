@@ -186,6 +186,20 @@ export default function ApplicationsPage() {
                 meta: { csv: (a) => STATUS_META[a.status].label },
             },
             {
+                id: 'reviewedAt',
+                header: 'Decided',
+                accessorFn: (a) => (a.reviewedAt ? new Date(a.reviewedAt).getTime() : 0),
+                cell: ({ row }) =>
+                    row.original.reviewedAt ? formatDate(row.original.reviewedAt) : 'Not recorded',
+                meta: { csv: (a) => (a.reviewedAt ? formatDateTime(a.reviewedAt) : '') },
+            },
+            {
+                id: 'reviewer',
+                header: 'Reviewer',
+                accessorFn: (a) => a.reviewedByEmail ?? '',
+                cell: ({ row }) => row.original.reviewedByEmail ?? 'Not recorded',
+            },
+            {
                 id: 'reason',
                 header: 'Reason given',
                 accessorFn: (a) => a.rejectReason,

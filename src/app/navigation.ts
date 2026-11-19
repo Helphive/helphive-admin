@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 import type { AppIcon } from '@/components/ui/icons';
-import { ApplicationsIcon, OverviewIcon } from '@/components/ui/icons';
+import { AdminsIcon, ApplicationsIcon, AuditIcon, OverviewIcon } from '@/components/ui/icons';
 import type { Permission } from '@/features/auth/permissions';
 import { PendingApplicationsCount } from '@/features/applications/navCount';
 
@@ -44,7 +44,7 @@ export const NAV_ITEMS: NavItem[] = [
         label: 'Overview',
         path: '/',
         icon: OverviewIcon,
-        permission: 'overview.view',
+        permission: 'applications.read',
         description: 'Queue health and review activity',
         keywords: ['home', 'dashboard', 'summary'],
     },
@@ -54,10 +54,30 @@ export const NAV_ITEMS: NavItem[] = [
         label: 'Provider applications',
         path: '/applications',
         icon: ApplicationsIcon,
-        permission: 'applications.view',
+        permission: 'applications.read',
         description: 'Review new providers and see past decisions',
         keywords: ['providers', 'review', 'queue', 'approve', 'reject', 'onboarding', 'dbs'],
         Badge: PendingApplicationsCount,
+    },
+    {
+        id: 'admins',
+        section: 'security',
+        label: 'Admins',
+        path: '/admins',
+        icon: AdminsIcon,
+        permission: 'admins.manage',
+        description: 'Who can use the console, their roles and two-step sign-in',
+        keywords: ['users', 'staff', 'roles', 'permissions', 'invite', 'disable', 'team'],
+    },
+    {
+        id: 'audit',
+        section: 'security',
+        label: 'Audit log',
+        path: '/audit',
+        icon: AuditIcon,
+        permission: 'audit.read',
+        description: 'Every sign-in, account change and decision',
+        keywords: ['history', 'activity', 'log', 'who', 'changes', 'events'],
     },
 ];
 

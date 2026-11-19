@@ -4,8 +4,8 @@ export interface ViewerDocument {
     key: string;
     label: string;
     description?: string;
-    /** Untrusted URL from the API. The viewer validates it before any use. */
-    url: string;
+    /** Untrusted URL from the API. The viewer validates it before any use. Null: no link was sent. */
+    url: string | null;
 }
 
 /**

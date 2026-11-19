@@ -18,6 +18,10 @@ import { useDocumentTitle, useNow, useUrlState } from '@/lib/hooks';
 import { useAllApplications } from './api';
 import { STATUS_META, type Application } from './model';
 import DecisionPanel from './DecisionPanel';
+import AuditTrail from '@/features/audit/AuditTrail';
+import { HiddenInDemo } from '@/features/auth/demo';
+import RequirePermission from '@/features/auth/RequirePermission';
+import { useSession } from '@/features/auth/useSession';
 import { ApplicantAvatar, ApplicationStatusPill, ServiceList, WaitMeter } from './parts';
 
 /** A contact link only when the API value is a well-formed address; otherwise plain text. */
@@ -42,6 +46,7 @@ export default function ApplicationDetailPage() {
     const now = useNow();
     const [{ doc }, setUrl] = useUrlState({ doc: 'photo', tab: 'documents' });
     const { pending, reviewed, all, isLoading, error, refetch, isFetching } = useAllApplications();
+    const { demo } = useSession();
     const app = all.find((a) => a.id === applicationId);
 
     useDocumentTitle(app?.name ?? 'Application');
@@ -111,20 +116,38 @@ export default function ApplicationDetailPage() {
             description: `From the provider app, ${formatAgo(app.submittedAt, now)}.`,
             tone: 'blue',
         },
-        app.status === 'pending'
-            ? {
-                  id: 'waiting',
-                  title: 'Waiting for review',
-                  time: `${formatDuration(waitingMs)} so far`,
-                  tone: 'amber',
-              }
-            : {
-                  id: 'decided',
-                  title: `${STATUS_META[app.status].label}${app.rejectReason ? `: ${app.rejectReason}` : ''}`,
-                  time: null,
-                  description: 'The applicant was notified.',
-                  tone: STATUS_META[app.status].tone,
-              },
+        ...app.decisions.map((d, i) => ({
+            id: `decision-${i}`,
+            title: `${STATUS_META[d.status].label}${d.byEmail ? ` by ${d.byEmail}` : ''}`,
+            time: formatDateTime(d.at),
+            dateTime: d.at,
+            description:
+                d.status === 'rejected'
+                    ? `Reason sent to the applicant: ${d.reason || 'none given'}`
+                    : 'The applicant was notified and can take jobs.',
+            tone: STATUS_META[d.status].tone,
+        })),
+        ...(app.status === 'pending'
+            ? [
+                  {
+                      id: 'waiting',
+                      title: 'Waiting for review',
+                      time: `${formatDuration(waitingMs)} so far`,
+                      tone: 'amber' as const,
+                  },
+              ]
+            : app.decisions.length === 0
+              ? [
+                    {
+                        id: 'decided',
+                        title: `${STATUS_META[app.status].label}${app.rejectReason ? `: ${app.rejectReason}` : ''}`,
+                        time: app.reviewedAt ? formatDateTime(app.reviewedAt) : null,
+                        description:
+                            'Decided before the console recorded reviewers. The applicant was notified.',
+                        tone: STATUS_META[app.status].tone,
+                    },
+                ]
+              : []),
     ];
 
     const position =
@@ -191,6 +214,7 @@ export default function ApplicationDetailPage() {
                             initialKey={doc}
                             onChange={(key) => setUrl({ doc: key })}
                             height={{ xs: 380, md: 'min(62vh, 640px)' }}
+                            missing={demo ? <HiddenInDemo /> : undefined}
                         />
                     ),
                 },
@@ -230,9 +254,19 @@ export default function ApplicationDetailPage() {
                     id: 'activity',
                     label: 'Activity',
                     content: (
-                        <Panel title="Activity">
-                            <Timeline items={timeline} label="Application activity" />
-                        </Panel>
+                        <Box sx={{ display: 'grid', gap: 2.5 }}>
+                            <Panel title="Decision history" subtitle="Oldest first">
+                                <Timeline items={timeline} label="Application activity" />
+                            </Panel>
+                            <RequirePermission permission="audit.read" fallback={null}>
+                                <AuditTrail
+                                    title="Audit entries"
+                                    subtitle="Every recorded action on this application"
+                                    targetType="provider_application"
+                                    targetId={app.id}
+                                />
+                            </RequirePermission>
+                        </Box>
                     ),
                 },
                 {
@@ -259,6 +293,20 @@ export default function ApplicationDetailPage() {
                                 },
                                 { label: 'Location', value: app.place },
                                 { label: 'Submitted', value: formatAgo(app.submittedAt, now) },
+                                ...(app.status !== 'pending'
+                                    ? [
+                                          {
+                                              label: 'Reviewed',
+                                              value: app.reviewedAt
+                                                  ? formatDateTime(app.reviewedAt)
+                                                  : 'Not recorded',
+                                          },
+                                          {
+                                              label: 'Reviewer',
+                                              value: app.reviewedByEmail ?? 'Not recorded',
+                                          },
+                                      ]
+                                    : []),
                                 ...(app.status === 'pending'
                                     ? [
                                           {
