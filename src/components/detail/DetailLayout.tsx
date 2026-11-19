@@ -64,7 +64,14 @@ export default function DetailLayout({
                     alignItems: 'start',
                 }}
             >
-                <Box sx={{ display: 'grid', gap: 2.5, minWidth: 0 }}>
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gap: 2.5,
+                        minWidth: 0,
+                        gridTemplateColumns: 'minmax(0, 1fr)',
+                    }}
+                >
                     {children}
                     {tabs && active && (
                         <Box sx={{ minWidth: 0 }}>

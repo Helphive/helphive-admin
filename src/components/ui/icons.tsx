@@ -96,6 +96,13 @@ import {
     FlaskIcon,
     BookmarkSimpleIcon,
     ChartBarIcon,
+    ShieldWarningIcon,
+    TrayIcon,
+    SlidersHorizontalIcon,
+    ListChecksIcon,
+    HandPalmIcon,
+    GraphIcon,
+    PlayIcon,
     type Icon as PhosphorIcon,
     type IconProps as PhosphorIconProps,
     type IconWeight,
@@ -247,6 +254,14 @@ export const ResolveIcon = /* @__PURE__ */ icon(PhWrenchIcon, 'ResolveIcon');
 export const LocationIcon = /* @__PURE__ */ icon(PhMapPinIcon, 'LocationIcon');
 export const BalanceIcon = /* @__PURE__ */ icon(PhWalletIcon, 'BalanceIcon');
 export const OnlineIcon = /* @__PURE__ */ icon(PhBroadcastIcon, 'OnlineIcon');
+// Risk
+export const RiskIcon = /* @__PURE__ */ icon(ShieldWarningIcon, 'RiskIcon');
+export const ReviewQueueIcon = /* @__PURE__ */ icon(TrayIcon, 'ReviewQueueIcon');
+export const RulesIcon = /* @__PURE__ */ icon(SlidersHorizontalIcon, 'RulesIcon');
+export const ListsIcon = /* @__PURE__ */ icon(ListChecksIcon, 'ListsIcon');
+export const HoldIcon = /* @__PURE__ */ icon(HandPalmIcon, 'HoldIcon');
+export const LinkedAccountsIcon = /* @__PURE__ */ icon(GraphIcon, 'LinkedAccountsIcon');
+export const RunIcon = /* @__PURE__ */ icon(PlayIcon, 'RunIcon');
 
 /* Status and feedback */
 export const InfoIcon = /* @__PURE__ */ icon(PhInfoIcon, 'InfoIcon');

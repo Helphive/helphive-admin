@@ -1,7 +1,7 @@
 // The only module that imports ECharts. It registers just the pieces the console uses, so the
 // bundle carries those and not the whole library. Add a chart type here before using it.
 import * as echarts from 'echarts/core';
-import { BarChart, HeatmapChart, LineChart, PieChart } from 'echarts/charts';
+import { BarChart, GraphChart, HeatmapChart, LineChart, PieChart } from 'echarts/charts';
 import {
     GridComponent,
     LegendComponent,
@@ -14,6 +14,7 @@ import { chart, color, font } from '@/theme/tokens';
 
 echarts.use([
     BarChart,
+    GraphChart,
     HeatmapChart,
     LineChart,
     PieChart,
