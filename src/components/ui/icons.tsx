@@ -103,6 +103,12 @@ import {
     HandPalmIcon,
     GraphIcon,
     PlayIcon,
+    ScalesIcon,
+    GavelIcon,
+    LifebuoyIcon,
+    GearSixIcon,
+    MegaphoneIcon,
+    FlagBannerIcon,
     type Icon as PhosphorIcon,
     type IconProps as PhosphorIconProps,
     type IconWeight,
@@ -289,3 +295,10 @@ export const ProvidersIcon = /* @__PURE__ */ icon(IdentificationBadgeIcon, 'Prov
 export const SupplyDemandIcon = /* @__PURE__ */ icon(GridFourIcon, 'SupplyDemandIcon');
 export const ExplorerIcon = /* @__PURE__ */ icon(FlaskIcon, 'ExplorerIcon');
 export const SavedViewIcon = /* @__PURE__ */ icon(BookmarkSimpleIcon, 'SavedViewIcon');
+/* Finance, support and platform */
+export const ReconcileIcon = /* @__PURE__ */ icon(ScalesIcon, 'ReconcileIcon');
+export const DisputeIcon = /* @__PURE__ */ icon(GavelIcon, 'DisputeIcon');
+export const CasesIcon = /* @__PURE__ */ icon(LifebuoyIcon, 'CasesIcon');
+export const SettingsIcon = /* @__PURE__ */ icon(GearSixIcon, 'SettingsIcon');
+export const NotifyIcon = /* @__PURE__ */ icon(MegaphoneIcon, 'NotifyIcon');
+export const BannerIcon = /* @__PURE__ */ icon(FlagBannerIcon, 'BannerIcon');

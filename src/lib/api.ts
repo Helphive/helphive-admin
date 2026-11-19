@@ -104,6 +104,12 @@ export const api = createApi({
         'Payouts',
         'AnalyticsViews',
         'Risk',
+        // Finance, support and platform module.
+        'Finance',
+        'Disputes',
+        'Settings',
+        'Cases',
+        'Notifications',
     ],
     // Admin data goes stale quickly; refetch when someone comes back to the tab.
     refetchOnFocus: true,
