@@ -15,7 +15,7 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import { NAV_ITEMS, SECTIONS, type NavItem } from '@/app/navigation';
+import { NAV_ITEMS, navItemFor, SECTIONS, type NavItem } from '@/app/navigation';
 import { ErrorBoundary, Logo, PageSkeleton, StatusPill } from '@/components/ui';
 import {
     AccountIcon,
@@ -83,17 +83,15 @@ function NavRow({
     onNavigate?: () => void;
 }) {
     const { pathname } = useLocation();
-    const active =
-        item.path === '/'
-            ? pathname === '/'
-            : pathname === item.path || pathname.startsWith(`${item.path}/`);
+    // The longest matching path wins, so /analytics/revenue lights Revenue, not the analytics overview.
+    const active = navItemFor(pathname)?.id === item.id;
     const Icon = item.icon;
     const Badge = item.Badge;
     const row = (
         <Box
             component={NavLink}
             to={item.path}
-            end={item.path === '/'}
+            end={item.path === '/' || NAV_ITEMS.some((o) => o.path.startsWith(`${item.path}/`))}
             onClick={onNavigate}
             aria-label={rail ? item.label : undefined}
             sx={{

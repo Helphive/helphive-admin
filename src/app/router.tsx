@@ -31,6 +31,44 @@ const EarningsPage = lazy(() => import('@/features/payments/EarningsPage'));
 const EarningDetailPage = lazy(() => import('@/features/payments/EarningDetailPage'));
 const PayoutsPage = lazy(() => import('@/features/payments/PayoutsPage'));
 const PayoutDetailPage = lazy(() => import('@/features/payments/PayoutDetailPage'));
+const ANALYTICS_ROUTES = [
+    { path: '', crumb: '', page: lazy(() => import('@/features/analytics/OverviewPage')) },
+    {
+        path: 'bookings',
+        crumb: 'Bookings',
+        page: lazy(() => import('@/features/analytics/BookingsPage')),
+    },
+    {
+        path: 'revenue',
+        crumb: 'Revenue',
+        page: lazy(() => import('@/features/analytics/RevenuePage')),
+    },
+    {
+        path: 'health',
+        crumb: 'Marketplace health',
+        page: lazy(() => import('@/features/analytics/HealthPage')),
+    },
+    {
+        path: 'customers',
+        crumb: 'Customers',
+        page: lazy(() => import('@/features/analytics/CustomersPage')),
+    },
+    {
+        path: 'providers',
+        crumb: 'Providers',
+        page: lazy(() => import('@/features/analytics/ProvidersPage')),
+    },
+    {
+        path: 'supply-demand',
+        crumb: 'Supply and demand',
+        page: lazy(() => import('@/features/analytics/SupplyDemandPage')),
+    },
+    {
+        path: 'explorer',
+        crumb: 'Explorer',
+        page: lazy(() => import('@/features/analytics/ExplorerPage')),
+    },
+];
 
 const handle = (crumb: string): RouteHandle => ({ crumb });
 
@@ -209,6 +247,20 @@ export const router = createBrowserRouter([
                     { index: true, element: <AuditLogPage /> },
                     { path: ':entryId', handle: handle('Entry'), element: <AuditEntryPage /> },
                 ],
+            },
+            {
+                path: 'analytics',
+                handle: handle('Analytics'),
+                element: (
+                    <RequirePermission permission="analytics.read">
+                        <Outlet />
+                    </RequirePermission>
+                ),
+                children: ANALYTICS_ROUTES.map(({ path, crumb, page: Page }) =>
+                    path
+                        ? { path, handle: handle(crumb), element: <Page /> }
+                        : { index: true, element: <Page /> }
+                ),
             },
             {
                 path: 'account',

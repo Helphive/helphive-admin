@@ -102,6 +102,7 @@ export const api = createApi({
         'Payments',
         'Earnings',
         'Payouts',
+        'AnalyticsViews',
     ],
     // Admin data goes stale quickly; refetch when someone comes back to the tab.
     refetchOnFocus: true,
