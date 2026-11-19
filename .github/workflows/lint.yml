@@ -10,34 +10,33 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
+              with:
+                  # The branch itself, so fixes can be pushed back to it.
+                  ref: ${{ github.head_ref }}
 
             - name: Set up Node.js
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
                   node-version-file: ".nvmrc"
+                  cache: npm
 
-            - name: Verify Node.js version
-              run: |
-                  node -v
-                  npm -v
+            - run: npm ci
 
-            - name: Install dependencies for admin
+            - name: Fix lint and formatting
               run: |
-                  npm install
-
-            - name: Run ESLint on admin
-              run: |
-                  npm run lint --fix
-
-            - name: Run Prettier (check formatting) on admin
-              run: |
-                  npm run format --write
+                  npm run lint:fix
+                  npm run format
 
             - name: Commit and push changes if any
               run: |
                   git config --global user.name 'github-actions[bot]'
                   git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-                  git add .
+                  git add src
                   git commit -m "Auto-fix lint and format issues" || echo "No changes to commit"
                   git push origin HEAD:${{ github.event.pull_request.head.ref }} || echo "No changes to push"
+
+            # Fail the check on anything the fixers could not resolve.
+            - run: npm run typecheck
+            - run: npm run lint -- --max-warnings=0
+            - run: npm run format:check
