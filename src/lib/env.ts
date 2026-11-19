@@ -28,3 +28,10 @@ export const API_HOST = (() => {
         return API_URL;
     }
 })();
+
+/**
+ * Which Stripe dashboard the console links to. The API does not say whether its Stripe key is a
+ * test or a live one, so the build says it (VITE_APP_STRIPE_MODE=live); the apps use test keys today.
+ */
+export const STRIPE_MODE: 'test' | 'live' =
+    import.meta.env.VITE_APP_STRIPE_MODE === 'live' ? 'live' : 'test';

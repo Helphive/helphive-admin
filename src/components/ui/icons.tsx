@@ -66,6 +66,28 @@ import {
     ProhibitIcon,
     EyeClosedIcon,
     ClockCounterClockwiseIcon,
+    CalendarCheckIcon as PhCalendarCheckIcon,
+    UsersIcon as PhUsersIcon,
+    CreditCardIcon as PhCreditCardIcon,
+    CoinsIcon as PhCoinsIcon,
+    BankIcon as PhBankIcon,
+    MapTrifoldIcon as PhMapTrifoldIcon,
+    ReceiptIcon as PhReceiptIcon,
+    PrinterIcon as PhPrinterIcon,
+    NotePencilIcon as PhNotePencilIcon,
+    PencilSimpleIcon as PhPencilSimpleIcon,
+    TrashIcon as PhTrashIcon,
+    ArrowCounterClockwiseIcon as PhArrowCounterClockwiseIcon,
+    EnvelopeSimpleIcon as PhEnvelopeSimpleIcon,
+    SealCheckIcon as PhSealCheckIcon,
+    WifiSlashIcon as PhWifiSlashIcon,
+    PulseIcon as PhPulseIcon,
+    ArrowUUpLeftIcon as PhArrowUUpLeftIcon,
+    UserMinusIcon as PhUserMinusIcon,
+    WrenchIcon as PhWrenchIcon,
+    MapPinIcon as PhMapPinIcon,
+    WalletIcon as PhWalletIcon,
+    BroadcastIcon as PhBroadcastIcon,
     type Icon as PhosphorIcon,
     type IconProps as PhosphorIconProps,
     type IconWeight,
@@ -193,6 +215,30 @@ export const AuditIcon = /* @__PURE__ */ icon(ScrollIcon, 'AuditIcon');
 export const AccountIcon = /* @__PURE__ */ icon(UserGearIcon, 'AccountIcon');
 export const HiddenIcon = /* @__PURE__ */ icon(EyeClosedIcon, 'HiddenIcon');
 export const RejectIcon = /* @__PURE__ */ icon(XCircleIcon, 'RejectIcon');
+
+/* Operations */
+export const BookingsIcon = /* @__PURE__ */ icon(PhCalendarCheckIcon, 'BookingsIcon');
+export const UsersIcon = /* @__PURE__ */ icon(PhUsersIcon, 'UsersIcon');
+export const PaymentsIcon = /* @__PURE__ */ icon(PhCreditCardIcon, 'PaymentsIcon');
+export const EarningsIcon = /* @__PURE__ */ icon(PhCoinsIcon, 'EarningsIcon');
+export const PayoutsIcon = /* @__PURE__ */ icon(PhBankIcon, 'PayoutsIcon');
+export const LiveIcon = /* @__PURE__ */ icon(PhMapTrifoldIcon, 'LiveIcon');
+export const ReceiptIcon = /* @__PURE__ */ icon(PhReceiptIcon, 'ReceiptIcon');
+export const PrintIcon = /* @__PURE__ */ icon(PhPrinterIcon, 'PrintIcon');
+export const NoteIcon = /* @__PURE__ */ icon(PhNotePencilIcon, 'NoteIcon');
+export const EditIcon = /* @__PURE__ */ icon(PhPencilSimpleIcon, 'EditIcon');
+export const DeleteIcon = /* @__PURE__ */ icon(PhTrashIcon, 'DeleteIcon');
+export const ReinstateIcon = /* @__PURE__ */ icon(PhArrowCounterClockwiseIcon, 'ReinstateIcon');
+export const EmailIcon = /* @__PURE__ */ icon(PhEnvelopeSimpleIcon, 'EmailIcon');
+export const VerifiedIcon = /* @__PURE__ */ icon(PhSealCheckIcon, 'VerifiedIcon');
+export const OfflineIcon = /* @__PURE__ */ icon(PhWifiSlashIcon, 'OfflineIcon');
+export const ActivityIcon = /* @__PURE__ */ icon(PhPulseIcon, 'ActivityIcon');
+export const RefundIcon = /* @__PURE__ */ icon(PhArrowUUpLeftIcon, 'RefundIcon');
+export const ReleaseIcon = /* @__PURE__ */ icon(PhUserMinusIcon, 'ReleaseIcon');
+export const ResolveIcon = /* @__PURE__ */ icon(PhWrenchIcon, 'ResolveIcon');
+export const LocationIcon = /* @__PURE__ */ icon(PhMapPinIcon, 'LocationIcon');
+export const BalanceIcon = /* @__PURE__ */ icon(PhWalletIcon, 'BalanceIcon');
+export const OnlineIcon = /* @__PURE__ */ icon(PhBroadcastIcon, 'OnlineIcon');
 
 /* Status and feedback */
 export const InfoIcon = /* @__PURE__ */ icon(PhInfoIcon, 'InfoIcon');

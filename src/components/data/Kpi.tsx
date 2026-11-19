@@ -16,6 +16,8 @@ export interface KpiDelta {
     good?: 'up' | 'down' | 'neutral';
     /** Show the change in points (for rates) instead of a relative percentage. */
     unit?: 'count' | 'points';
+    /** Writes the absolute change (e.g. as money); counts are written as numbers. */
+    format?: (n: number) => string;
 }
 
 export interface KpiTileProps {
@@ -37,7 +39,7 @@ function deltaText(d: KpiDelta) {
         return { diff, text: `${pts > 0 ? '+' : ''}${pts} pts` };
     }
     const rel = d.previous === 0 ? null : Math.round((diff / Math.abs(d.previous)) * 100);
-    const abs = `${diff > 0 ? '+' : ''}${diff}`;
+    const abs = `${diff > 0 ? '+' : diff < 0 ? '-' : ''}${d.format ? d.format(Math.abs(diff)) : Math.abs(diff)}`;
     return { diff, text: rel === null ? abs : `${abs} (${rel > 0 ? '+' : ''}${rel}%)` };
 }
 

@@ -139,7 +139,13 @@ export default function AuditEntryPage() {
             ? can('admins.manage')
             : entry.target?.type === 'provider_application'
               ? can('applications.read')
-              : false;
+              : entry.target?.type === 'user'
+                ? can('users.read')
+                : entry.target?.type === 'booking'
+                  ? can('bookings.read')
+                  : entry.target?.type === 'payment'
+                    ? can('payments.read')
+                    : false;
     const actorPath =
         entry.actor.type === 'admin' && entry.actor.id && can('admins.manage')
             ? `/admins/${entry.actor.id}`

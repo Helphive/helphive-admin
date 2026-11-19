@@ -123,6 +123,11 @@ export interface DataTableProps<T> {
     onRowActivate?: (row: T) => void;
     /** File name for the CSV export (without extension). Omit to hide the export button. */
     csvFilename?: string;
+    /**
+     * Server lists: fetches every row matching the filters for the CSV (the table only holds the
+     * current page). Without it a server list exports the page on screen.
+     */
+    exportAllRows?: () => Promise<T[]>;
 
     /** Content on the left of the toolbar (filters, tabs). */
     toolbar?: ReactNode;
@@ -179,9 +184,12 @@ export default function DataTable<T>({
     selectionActions,
     onRowActivate,
     csvFilename,
+    exportAllRows,
     toolbar,
     maxHeight = '72vh',
 }: DataTableProps<T>) {
+    const [exporting, setExporting] = useState(false);
+    const [exportError, setExportError] = useState<string | null>(null);
     const prefKey = tableId ? `helphive-admin.table.${tableId}` : undefined;
     const [sortingState, setSortingState] = useState<SortingState>(initialSorting);
     const sorting = sortingProp ?? sortingState;
@@ -285,17 +293,39 @@ export default function DataTable<T>({
     const selected = table.getSelectedRowModel().rows.map((r) => r.original);
     const visibleLeafs = table.getVisibleLeafColumns();
 
-    const exportCsv = () => {
+    const exportCsv = async () => {
         const cols = visibleLeafs.filter((c) => !c.columnDef.meta?.noCsv);
-        // Every row that passed the filters, in the current order, not only this page.
-        const source = table.getSortedRowModel().rows;
         const headers = cols.map((c) => columnLabel({ ...c.columnDef, id: c.id }));
-        const body = source.map((r) =>
-            cols.map((c) => {
-                const custom = c.columnDef.meta?.csv;
-                return custom ? custom(r.original) : r.getValue(c.id);
-            })
-        );
+        let body: unknown[][];
+        if (exportAllRows) {
+            // A server list: ask the API for every matching row, in the requested order.
+            setExporting(true);
+            setExportError(null);
+            try {
+                const all = await exportAllRows();
+                body = all.map((row, i) =>
+                    cols.map((c) => {
+                        const custom = c.columnDef.meta?.csv;
+                        if (custom) return custom(row);
+                        return c.accessorFn ? c.accessorFn(row, i) : '';
+                    })
+                );
+            } catch (err) {
+                setExportError(getErrorMessage(err, 'The export failed. Try again.'));
+                return;
+            } finally {
+                setExporting(false);
+            }
+        } else {
+            // Every row that passed the filters, in the current order, not only this page.
+            const source = table.getSortedRowModel().rows;
+            body = source.map((r) =>
+                cols.map((c) => {
+                    const custom = c.columnDef.meta?.csv;
+                    return custom ? custom(r.original) : r.getValue(c.id);
+                })
+            );
+        }
         const stamp = new Date().toISOString().slice(0, 10);
         downloadText(`${csvFilename}-${stamp}.csv`, toCsv(headers, body));
     };
@@ -408,8 +438,9 @@ export default function DataTable<T>({
                                 <IconButton
                                     size="small"
                                     aria-label={`Export ${total} rows as CSV`}
-                                    onClick={exportCsv}
-                                    disabled={!total}
+                                    onClick={() => void exportCsv()}
+                                    disabled={!total || exporting}
+                                    aria-busy={exporting || undefined}
                                 >
                                     <ExportCsvIcon size={18} />
                                 </IconButton>
@@ -449,6 +480,22 @@ export default function DataTable<T>({
                 </Menu>
             </Box>
 
+            {(exporting || exportError) && (
+                <Typography
+                    role={exportError ? 'alert' : 'status'}
+                    variant="body2"
+                    sx={{
+                        px: 1.5,
+                        py: 0.75,
+                        borderBottom: hairline,
+                        bgcolor: exportError ? color.red50 : color.subtle,
+                        color: exportError ? color.red700 : color.ink600,
+                        fontWeight: 600,
+                    }}
+                >
+                    {exportError ?? `Preparing ${total} rows for the CSV file`}
+                </Typography>
+            )}
             <TableContainer sx={{ maxHeight, borderRadius: 0, position: 'relative' }}>
                 <Table
                     stickyHeader

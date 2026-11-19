@@ -25,7 +25,7 @@ import {
 } from './api';
 import type { AdminRecord } from './model';
 import { AdminStatusPill, RolePill, TwoStepState } from './parts';
-import ReasonDialog from './ReasonDialog';
+import { ReasonDialog } from '@/components/ui';
 import RolePicker from './RolePicker';
 
 type Action = 'role' | 'disable' | 'enable' | 'sign-out' | 'reset-mfa';

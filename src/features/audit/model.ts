@@ -42,6 +42,20 @@ const ACTION_LABELS: Record<string, string> = {
     'applications.approved': 'Approved an application',
     'applications.rejected': 'Rejected an application',
     'demo.write_refused': 'Demo write refused',
+    'users.suspended': 'Suspended a person',
+    'users.reinstated': 'Reinstated a person',
+    'users.sessions_ended': "Ended a person's sessions",
+    'users.email_verified': 'Marked an email verified',
+    'users.verification_email_sent': 'Resent a verification email',
+    'users.availability_off': 'Set a provider offline',
+    'notes.created': 'Added a note',
+    'notes.updated': 'Edited a note',
+    'notes.deleted': 'Deleted a note',
+    'bookings.cancelled': 'Cancelled a booking',
+    'bookings.released': 'Released a booking',
+    'bookings.resolved_completed': 'Resolved a booking as completed',
+    'bookings.resolved_cancelled': 'Resolved a booking as cancelled',
+    'payments.refunded': 'Refunded a payment',
 };
 
 /** Groups for the action filter: the API accepts a prefix ending in "." for these. */
@@ -50,6 +64,10 @@ export const ACTION_GROUPS: { prefix: string; label: string }[] = [
     { prefix: 'account.', label: 'Own account changes' },
     { prefix: 'admins.', label: 'Admin management' },
     { prefix: 'applications.', label: 'Application decisions' },
+    { prefix: 'users.', label: 'Customer and provider accounts' },
+    { prefix: 'bookings.', label: 'Booking actions' },
+    { prefix: 'payments.', label: 'Refunds' },
+    { prefix: 'notes.', label: 'Notes' },
     { prefix: 'demo.', label: 'Demo admin' },
 ];
 
@@ -64,6 +82,10 @@ export const TARGET_TYPES: { value: string; label: string }[] = [
     { value: 'admin', label: 'Admin' },
     { value: 'admin_session', label: 'Admin session' },
     { value: 'provider_application', label: 'Provider application' },
+    { value: 'user', label: 'Customer or provider' },
+    { value: 'booking', label: 'Booking' },
+    { value: 'payment', label: 'Payment' },
+    { value: 'note', label: 'Note' },
     { value: 'route', label: 'Refused request' },
 ];
 
@@ -88,6 +110,9 @@ export function targetPath(target: AuditEntry['target']): string | null {
     if (!target?.id) return null;
     if (target.type === 'admin') return `/admins/${target.id}`;
     if (target.type === 'provider_application') return `/applications/${target.id}`;
+    if (target.type === 'user') return `/users/${target.id}`;
+    if (target.type === 'booking') return `/bookings/${target.id}`;
+    if (target.type === 'payment') return `/payments/${target.id}`;
     return null;
 }
 

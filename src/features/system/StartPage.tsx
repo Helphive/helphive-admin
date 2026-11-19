@@ -7,13 +7,13 @@ import { useSession } from '@/features/auth/useSession';
 const OverviewPage = lazy(() => import('@/features/overview/OverviewPage'));
 
 /**
- * "/": the overview for admins who can read applications; otherwise the first page their role
- * opens (a finance admin lands on the audit log), so nobody starts on a "no access" page.
+ * "/": the operations overview for admins who may read it; otherwise the first page their role
+ * opens, so nobody starts on a "no access" page.
  */
 export default function StartPage() {
     const { can } = useSession();
-    if (can('applications.read')) return <OverviewPage />;
+    if (can('operations.read')) return <OverviewPage />;
     const first = NAV_ITEMS.find((i) => i.path !== '/' && can(i.permission));
     if (first) return <Navigate to={first.path} replace />;
-    return <NoAccess permission="applications.read" />;
+    return <NoAccess permission="operations.read" />;
 }

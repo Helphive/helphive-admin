@@ -341,7 +341,7 @@ function SearchButton({ onOpen, compact }: { onOpen: () => void; compact: boolea
         return (
             <IconButton
                 onClick={onOpen}
-                aria-label="Search pages and applicants"
+                aria-label="Search records and pages"
                 aria-keyshortcuts="Control+K Meta+K"
             >
                 <SearchIcon />

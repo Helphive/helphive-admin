@@ -1,6 +1,17 @@
 import type { ComponentType } from 'react';
 import type { AppIcon } from '@/components/ui/icons';
-import { AdminsIcon, ApplicationsIcon, AuditIcon, OverviewIcon } from '@/components/ui/icons';
+import {
+    AdminsIcon,
+    ApplicationsIcon,
+    AuditIcon,
+    BookingsIcon,
+    EarningsIcon,
+    LiveIcon,
+    OverviewIcon,
+    PaymentsIcon,
+    PayoutsIcon,
+    UsersIcon,
+} from '@/components/ui/icons';
 import type { Permission } from '@/features/auth/permissions';
 import { PendingApplicationsCount } from '@/features/applications/navCount';
 
@@ -44,9 +55,39 @@ export const NAV_ITEMS: NavItem[] = [
         label: 'Overview',
         path: '/',
         icon: OverviewIcon,
-        permission: 'applications.read',
-        description: 'Queue health and review activity',
-        keywords: ['home', 'dashboard', 'summary'],
+        permission: 'operations.read',
+        description: 'Live counts, what needs attention, today against yesterday',
+        keywords: ['home', 'dashboard', 'summary', 'attention', 'activity', 'today'],
+    },
+    {
+        id: 'live',
+        section: 'operations',
+        label: 'Live',
+        path: '/live',
+        icon: LiveIcon,
+        permission: 'operations.read',
+        description: 'Map of providers online and bookings under way',
+        keywords: ['map', 'online', 'now', 'in progress', 'location'],
+    },
+    {
+        id: 'bookings',
+        section: 'operations',
+        label: 'Bookings',
+        path: '/bookings',
+        icon: BookingsIcon,
+        permission: 'bookings.read',
+        description: 'Every shift booked, with its people, money and history',
+        keywords: ['jobs', 'shifts', 'receipts', 'cancel', 'release', 'resolve'],
+    },
+    {
+        id: 'users',
+        section: 'operations',
+        label: 'Customers and providers',
+        path: '/users',
+        icon: UsersIcon,
+        permission: 'users.read',
+        description: 'Everyone with an account: profile, sessions, bookings, money',
+        keywords: ['users', 'customers', 'providers', 'people', 'suspend', 'accounts'],
     },
     {
         id: 'applications',
@@ -58,6 +99,36 @@ export const NAV_ITEMS: NavItem[] = [
         description: 'Review new providers and see past decisions',
         keywords: ['providers', 'review', 'queue', 'approve', 'reject', 'onboarding', 'dbs'],
         Badge: PendingApplicationsCount,
+    },
+    {
+        id: 'payments',
+        section: 'finance',
+        label: 'Payments',
+        path: '/payments',
+        icon: PaymentsIcon,
+        permission: 'payments.read',
+        description: 'What customers paid, platform fees and refunds',
+        keywords: ['stripe', 'refund', 'charges', 'money'],
+    },
+    {
+        id: 'earnings',
+        section: 'finance',
+        label: 'Earnings',
+        path: '/earnings',
+        icon: EarningsIcon,
+        permission: 'payments.read',
+        description: 'What providers earned and whether it was released',
+        keywords: ['provider pay', 'transfers', 'release', 'money'],
+    },
+    {
+        id: 'payouts',
+        section: 'finance',
+        label: 'Payouts',
+        path: '/payouts',
+        icon: PayoutsIcon,
+        permission: 'payments.read',
+        description: 'Money providers moved to their bank or card',
+        keywords: ['bank', 'stripe', 'failed payouts', 'balance'],
     },
     {
         id: 'admins',

@@ -7,6 +7,7 @@ import { useSession } from '@/features/auth/useSession';
 import { AccountIcon, LogoutIcon, SearchIcon } from '@/components/ui/icons';
 import { color, font, hairline, radius } from '@/theme/tokens';
 import { filterCommands, type Command } from './commands';
+import { SEARCH_MIN, useRecordSearch } from './useRecordSearch';
 import { shortcutLabel } from './shortcut';
 
 function Kbd({ children }: { children: string }) {
@@ -39,8 +40,9 @@ function Palette({ onClose }: { onClose: () => void }) {
     const listId = useId();
     const listRef = useRef<HTMLUListElement>(null);
     const records = useApplicationCommands(query);
+    const search = useRecordSearch(query);
 
-    const commands = useMemo<Command[]>(() => {
+    const commands = useMemo<{ nav: Command[]; actions: Command[] }>(() => {
         const pages: Command[] = NAV_ITEMS.filter((i) => can(i.permission)).map((i) => {
             const Icon = i.icon;
             return {
@@ -72,10 +74,21 @@ function Palette({ onClose }: { onClose: () => void }) {
                 run: () => void signOut(),
             },
         ];
-        return [...pages, ...records.views, ...records.items, ...actions];
-    }, [can, signOut, records]);
+        // With the search endpoint, applicants come from it (typed, with everyone else) instead
+        // of the locally loaded application list.
+        const local = search.enabled ? [] : records.items;
+        return { nav: [...pages, ...records.views, ...local], actions };
+    }, [can, signOut, records, search.enabled]);
 
-    const results = useMemo(() => filterCommands(commands, query).slice(0, 30), [commands, query]);
+    const results = useMemo(
+        () =>
+            [
+                ...filterCommands(commands.nav, query).slice(0, query.trim() ? 6 : 30),
+                ...search.items,
+                ...filterCommands(commands.actions, query),
+            ].slice(0, 40),
+        [commands, query, search.items]
+    );
 
     useEffect(() => setActive(0), [query]);
     useEffect(() => {
@@ -125,13 +138,19 @@ function Palette({ onClose }: { onClose: () => void }) {
                 <InputBase
                     autoFocus
                     fullWidth
-                    placeholder="Search pages and applicants"
+                    placeholder={
+                        search.enabled
+                            ? 'Search people, bookings, payments, pages'
+                            : 'Search pages and applicants'
+                    }
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={onKeyDown}
                     inputProps={{
                         role: 'combobox',
-                        'aria-label': 'Search pages and applicants',
+                        'aria-label': search.enabled
+                            ? 'Search people, bookings, payments, applications and pages'
+                            : 'Search pages and applicants',
                         'aria-expanded': true,
                         'aria-controls': listId,
                         'aria-autocomplete': 'list',
@@ -143,6 +162,32 @@ function Palette({ onClose }: { onClose: () => void }) {
                 />
                 <Kbd>Esc</Kbd>
             </Box>
+            {search.enabled && query.trim().length > 0 && results.length > 0 && (
+                <Box
+                    role="status"
+                    sx={{
+                        px: 2,
+                        py: 0.75,
+                        borderBottom: hairline,
+                        fontSize: font.size.xs,
+                        fontWeight: 600,
+                        color: search.error ? color.red700 : color.ink500,
+                        bgcolor: color.subtle,
+                    }}
+                >
+                    {query.trim().length < SEARCH_MIN
+                        ? 'Type one more character to search records'
+                        : search.searching
+                          ? 'Searching records'
+                          : search.error
+                            ? search.error
+                            : search.searched
+                              ? search.items.length
+                                  ? `${search.items.length} ${search.items.length === 1 ? 'record' : 'records'} found (at most 5 of each kind)`
+                                  : 'No records match; names and emails match from their start'
+                              : ''}
+                </Box>
+            )}
             <Box
                 component="ul"
                 id={listId}
@@ -158,9 +203,11 @@ function Palette({ onClose }: { onClose: () => void }) {
                         sx={{ px: 1.5, py: 4, textAlign: 'center' }}
                     >
                         <Typography variant="body2" color="text.secondary">
-                            {records.loading
-                                ? 'Looking up applicants'
-                                : `Nothing matches "${query}". Try a name, an email or a page.`}
+                            {search.searching || (!search.enabled && records.loading)
+                                ? 'Searching'
+                                : search.error
+                                  ? search.error
+                                  : `Nothing matches "${query}". Try the start of a name or email, a phone number, a receipt number (HH-…) or an id.`}
                         </Typography>
                     </Box>
                 )}

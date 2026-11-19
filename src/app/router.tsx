@@ -17,6 +17,20 @@ const AdminsPage = lazy(() => import('@/features/admins/AdminsPage'));
 const AdminDetailPage = lazy(() => import('@/features/admins/AdminDetailPage'));
 const AuditLogPage = lazy(() => import('@/features/audit/AuditLogPage'));
 const AuditEntryPage = lazy(() => import('@/features/audit/AuditEntryPage'));
+const ApplicationInsightsPage = lazy(() => import('@/features/applications/InsightsPage'));
+const LivePage = lazy(() => import('@/features/live/LivePage'));
+const UsersPage = lazy(() => import('@/features/users/UsersPage'));
+const UserDetailPage = lazy(() => import('@/features/users/UserDetailPage'));
+const ProviderBalancePage = lazy(() => import('@/features/users/ProviderBalancePage'));
+const BookingsPage = lazy(() => import('@/features/bookings/BookingsPage'));
+const BookingDetailPage = lazy(() => import('@/features/bookings/BookingDetailPage'));
+const ReceiptPage = lazy(() => import('@/features/bookings/ReceiptPage'));
+const PaymentsPage = lazy(() => import('@/features/payments/PaymentsPage'));
+const PaymentDetailPage = lazy(() => import('@/features/payments/PaymentDetailPage'));
+const EarningsPage = lazy(() => import('@/features/payments/EarningsPage'));
+const EarningDetailPage = lazy(() => import('@/features/payments/EarningDetailPage'));
+const PayoutsPage = lazy(() => import('@/features/payments/PayoutsPage'));
+const PayoutDetailPage = lazy(() => import('@/features/payments/PayoutDetailPage'));
 
 const handle = (crumb: string): RouteHandle => ({ crumb });
 
@@ -51,10 +65,123 @@ export const router = createBrowserRouter([
                 children: [
                     { index: true, element: <ApplicationsPage /> },
                     {
+                        path: 'insights',
+                        handle: handle('Insights'),
+                        element: <ApplicationInsightsPage />,
+                    },
+                    {
                         path: ':applicationId',
                         handle: handle('Application'),
                         element: <ApplicationDetailPage />,
                     },
+                ],
+            },
+            {
+                path: 'live',
+                handle: handle('Live'),
+                element: (
+                    <RequirePermission permission="operations.read">
+                        <LivePage />
+                    </RequirePermission>
+                ),
+            },
+            {
+                path: 'users',
+                handle: handle('Customers and providers'),
+                element: (
+                    <RequirePermission permission="users.read">
+                        <Outlet />
+                    </RequirePermission>
+                ),
+                children: [
+                    { index: true, element: <UsersPage /> },
+                    {
+                        path: ':userId',
+                        handle: handle('Person'),
+                        children: [
+                            { index: true, element: <UserDetailPage /> },
+                            {
+                                path: 'balance',
+                                handle: handle('Balance'),
+                                element: (
+                                    <RequirePermission permission="payments.read">
+                                        <ProviderBalancePage />
+                                    </RequirePermission>
+                                ),
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                path: 'bookings',
+                handle: handle('Bookings'),
+                element: (
+                    <RequirePermission permission="bookings.read">
+                        <Outlet />
+                    </RequirePermission>
+                ),
+                children: [
+                    { index: true, element: <BookingsPage /> },
+                    {
+                        path: ':bookingId',
+                        handle: handle('Booking'),
+                        children: [
+                            { index: true, element: <BookingDetailPage /> },
+                            {
+                                path: 'receipt',
+                                handle: handle('Receipt'),
+                                element: <ReceiptPage />,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                path: 'payments',
+                handle: handle('Payments'),
+                element: (
+                    <RequirePermission permission="payments.read">
+                        <Outlet />
+                    </RequirePermission>
+                ),
+                children: [
+                    { index: true, element: <PaymentsPage /> },
+                    {
+                        path: ':paymentId',
+                        handle: handle('Payment'),
+                        element: <PaymentDetailPage />,
+                    },
+                ],
+            },
+            {
+                path: 'earnings',
+                handle: handle('Earnings'),
+                element: (
+                    <RequirePermission permission="payments.read">
+                        <Outlet />
+                    </RequirePermission>
+                ),
+                children: [
+                    { index: true, element: <EarningsPage /> },
+                    {
+                        path: ':earningId',
+                        handle: handle('Earning'),
+                        element: <EarningDetailPage />,
+                    },
+                ],
+            },
+            {
+                path: 'payouts',
+                handle: handle('Payouts'),
+                element: (
+                    <RequirePermission permission="payments.read">
+                        <Outlet />
+                    </RequirePermission>
+                ),
+                children: [
+                    { index: true, element: <PayoutsPage /> },
+                    { path: ':payoutId', handle: handle('Payout'), element: <PayoutDetailPage /> },
                 ],
             },
             {

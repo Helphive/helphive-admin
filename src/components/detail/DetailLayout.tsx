@@ -67,7 +67,7 @@ export default function DetailLayout({
                 <Box sx={{ display: 'grid', gap: 2.5, minWidth: 0 }}>
                     {children}
                     {tabs && active && (
-                        <Box>
+                        <Box sx={{ minWidth: 0 }}>
                             <Tabs
                                 value={active.id}
                                 onChange={(_, v: string) => setUrl({ tab: v })}
