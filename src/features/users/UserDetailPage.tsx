@@ -19,6 +19,7 @@ import EventTimeline from '@/features/ops/EventTimeline';
 import NotesPanel from '@/features/ops/NotesPanel';
 import { PAYOUT_STATUS, PROVIDER_STATUS, STRIPE_STATUS, metaFor } from '@/features/ops/model';
 import { MetaPill, Money, Muted, RecordLink, StripeId, When } from '@/features/ops/parts';
+import RiskPanel from '@/features/risk/RiskPanel';
 import { usePageCrumb } from '@/features/shell/crumbContext';
 import { errorStatus, getErrorMessage } from '@/lib/api';
 import { formatDateTime, titleCase } from '@/lib/format';
@@ -745,6 +746,7 @@ export default function UserDetailPage() {
                             ]}
                         />
                     </Panel>
+                    <RiskPanel userId={d.user._id} />
                 </>
             }
         />
