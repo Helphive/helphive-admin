@@ -1,5 +1,6 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { postSignInPath } from './postSignInPath';
 import {
     Alert,
     Box,
@@ -318,8 +319,7 @@ export default function SignInPage() {
     const finish = (session: SessionPayload) => {
         setAccessToken(session.accessToken);
         dispatch(sessionReceived(session));
-        const from = (location.state as { from?: string } | null)?.from;
-        navigate(from && from !== '/login' ? from : '/', { replace: true });
+        navigate(postSignInPath(location.state), { replace: true });
     };
 
     const attempt = async (creds: { email: string; password: string }, demo: boolean) => {

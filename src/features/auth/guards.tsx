@@ -6,6 +6,7 @@ import { AppSkeleton, ErrorState } from '@/components/ui';
 import { authApi } from './authApi';
 import { noSession, sessionReceived } from './authSlice';
 import ForcedPasswordChange from './ForcedPasswordChange';
+import { postSignInPath } from './postSignInPath';
 import { refreshSession, takeDevToken } from './session';
 
 type RestoreOutcome = 'restored' | 'none' | 'unreachable';
@@ -132,9 +133,7 @@ export function GuestOnly({ children }: { children: ReactNode }) {
     const status = useAppSelector((s) => s.auth.status);
     const location = useLocation();
     const { unreachable } = useRestoreSession();
-    const from = (location.state as { from?: string } | null)?.from;
-    if (status === 'authenticated')
-        return <Navigate to={from && from !== '/login' ? from : '/'} replace />;
+    if (status === 'authenticated') return <Navigate to={postSignInPath(location.state)} replace />;
     if (status === 'checking' && !unreachable) return <AppSkeleton />;
     // The sign-in page is loaded on demand; it may still be arriving when the restore check ends.
     return <Suspense fallback={<AppSkeleton />}>{children}</Suspense>;

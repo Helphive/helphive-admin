@@ -10,10 +10,14 @@ import {
     TooltipComponent,
     VisualMapComponent,
 } from 'echarts/components';
+import { LegacyGridContainLabel } from 'echarts/features';
 import { SVGRenderer } from 'echarts/renderers';
 import { chart, color, font } from '@/theme/tokens';
 
 echarts.use([
+    // ECharts 6 lays `grid.containLabel` out the new way unless this is registered; the charts
+    // here rely on the ECharts 5 layout.
+    LegacyGridContainLabel,
     BarChart,
     GraphChart,
     HeatmapChart,
@@ -39,7 +43,18 @@ const axis = {
 };
 
 // Theme built from the design tokens: recessive axes and grid, ink tooltips, the fixed palette.
+// ECharts 6 changed several defaults the tokens do not cover (grid box, colour-scale padding,
+// legend gap, bar gap, axis pointer colours, tooltip fade, graph edge colour); they are set back
+// to the ECharts 5 values below so every chart keeps the look it had.
 echarts.registerTheme(THEME, {
+    grid: { left: '10%', top: 60, bottom: 70 },
+    visualMap: { padding: 5 },
+    axisPointer: {
+        lineStyle: { color: '#B9BEC9' },
+        shadowStyle: { color: 'rgba(210,219,238,0.2)' },
+        label: { backgroundColor: 'auto', color: '#fff' },
+    },
+    graph: { lineStyle: { color: '#aaa' } },
     color: [...chart.categorical],
     backgroundColor: 'transparent',
     textStyle: { fontFamily: font.family, color: chart.text },
@@ -48,9 +63,11 @@ echarts.registerTheme(THEME, {
         textStyle: { color: color.ink600, fontSize: 12, fontWeight: 600 },
         itemWidth: 10,
         itemHeight: 10,
+        itemGap: 10,
         icon: 'roundRect',
     },
     tooltip: {
+        displayTransition: false,
         backgroundColor: color.ink900,
         borderWidth: 0,
         padding: [6, 10],
@@ -61,7 +78,7 @@ echarts.registerTheme(THEME, {
     valueAxis: { ...axis, axisLine: { show: false } },
     timeAxis: { ...axis, splitLine: { show: false } },
     line: { symbolSize: 8, lineStyle: { width: 2 }, smooth: false },
-    bar: { itemStyle: { borderRadius: [4, 4, 0, 0] } },
+    bar: { defaultBarGap: '20%', itemStyle: { borderRadius: [4, 4, 0, 0] } },
 });
 
 export { echarts };
