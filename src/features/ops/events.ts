@@ -25,6 +25,7 @@ const EVENT_META: Record<string, { label: string; tone: Tone }> = {
     'booking.completed': { label: 'Booking completed', tone: 'green' },
     'booking.cancelled': { label: 'Booking cancelled', tone: 'red' },
     'booking.expired': { label: 'Booking expired', tone: 'grey' },
+    'booking.no_show': { label: 'Never started: cancelled and refunded', tone: 'red' },
     'payment.succeeded': { label: 'Payment succeeded', tone: 'green' },
     'payment.failed': { label: 'Payment failed', tone: 'red' },
     'refund.created': { label: 'Refund started', tone: 'amber' },

@@ -20,6 +20,7 @@ export type ComparisonKey =
 export type AttentionKind =
     | 'unassigned_near_start'
     | 'overdue_in_progress'
+    | 'accepted_not_started'
     | 'start_request_waiting'
     | 'earning_not_released'
     | 'payout_failed'

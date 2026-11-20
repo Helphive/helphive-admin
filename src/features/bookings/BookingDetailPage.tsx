@@ -107,7 +107,10 @@ function PersonCard({
 
 function cancelledByWho(d: BookingDetail) {
     const by = d.booking.cancelledBy;
-    if (!by) return '';
+    // The server's own cancellations: nobody accepted in time (stored against the customer), or nobody started the
+    // job by the end of its shift (stored against nobody).
+    if (d.booking.displayStatus === 'expired') return 'Nobody (expired automatically)';
+    if (!by) return d.booking.cancellationReason ? 'Nobody (cancelled automatically)' : '';
     if (by === d.booking.customerId || by === d.customer?._id) return 'The customer';
     if (by === d.booking.providerId || by === d.provider?._id) return 'The provider';
     return by.includes('•') ? by : 'Someone else';

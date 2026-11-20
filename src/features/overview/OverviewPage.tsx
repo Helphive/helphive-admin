@@ -48,6 +48,7 @@ const POLL_MS = 60_000;
 const KIND: Record<AttentionKind, string> = {
     unassigned_near_start: 'No provider, starting soon',
     overdue_in_progress: 'Running past its end',
+    accepted_not_started: 'Accepted, not started',
     start_request_waiting: 'Start request not approved',
     earning_not_released: 'Earning not released',
     payout_failed: 'Payout failed',
@@ -188,7 +189,7 @@ function AttentionList({ o, now }: { o: Overview; now: number }) {
                     bare
                     icon={<ApproveIcon />}
                     title="Nothing needs attention"
-                    description="Unassigned shifts near their start, overdue shifts, waiting start requests, unreleased earnings, failed payouts and refunds, and long-waiting applications show up here."
+                    description="Unassigned shifts near their start, overdue shifts, accepted shifts nobody started, waiting start requests, unreleased earnings, failed payouts and refunds, and long-waiting applications show up here."
                     sx={{ py: { xs: 3, sm: 4 } }}
                 />
             )}
@@ -205,7 +206,8 @@ function AttentionList({ o, now }: { o: Overview; now: number }) {
                     }}
                 >
                     Not listed (20 per kind at most):{' '}
-                    {hidden.map(([k, n]) => `${n} more ${KIND[k].toLowerCase()}`).join(', ')}.
+                    {hidden.map(([k, n]) => `${n} more ${(KIND[k] ?? k).toLowerCase()}`).join(', ')}
+                    .
                 </Box>
             )}
         </Panel>
