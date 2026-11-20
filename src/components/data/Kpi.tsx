@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, type SxProps, type Theme } from '@mui/material';
 import { SortAscIcon, SortDescIcon } from '@/components/ui/icons';
 import { srOnly } from '@/components/ui';
-import { color, font, hairline, radius } from '@/theme/tokens';
+import { color, font, hairline, hoverRow, radius } from '@/theme/tokens';
 
 export interface KpiDelta {
     /** Value in the current period (numeric form of the tile's value). */
@@ -103,12 +103,12 @@ export function Sparkline({
             <path
                 d={d}
                 fill="none"
-                stroke={color.ink300}
+                style={{ stroke: color.ink300 }}
                 strokeWidth={2}
                 strokeLinejoin="round"
                 strokeLinecap="round"
             />
-            <circle cx={lx} cy={ly} r={3} fill={color.ink900} />
+            <circle cx={lx} cy={ly} r={3} style={{ fill: color.ink900 }} />
         </Box>
     );
 }
@@ -130,7 +130,7 @@ export function KpiTile({ label, value, hint, delta, sparkline, to }: KpiTilePro
                 color: 'inherit',
                 textDecoration: 'none',
                 ...(to && {
-                    '&:hover': { bgcolor: color.subtle },
+                    '&:hover': hoverRow,
                     '&:focus-visible': { outlineOffset: -2 },
                 }),
             }}

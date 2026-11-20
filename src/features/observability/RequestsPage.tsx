@@ -7,7 +7,7 @@ import { EmptyState, PageHeader, Panel } from '@/components/ui';
 import { RequestsIcon } from '@/components/ui/icons';
 import { formatNumber } from '@/lib/format';
 import { useDocumentTitle, useUrlState } from '@/lib/hooks';
-import { color, font } from '@/theme/tokens';
+import { color, font, hoverRow } from '@/theme/tokens';
 import { useGetRequestSummaryQuery, useGetRouteTableQuery, useGetTopRoutesQuery } from './api';
 import {
     formatMs,
@@ -68,7 +68,7 @@ function Ranked({
                                 py: 1.1,
                                 cursor: 'pointer',
                                 '& + &': { borderTop: `1px solid ${color.line}` },
-                                '&:hover': { bgcolor: color.subtle },
+                                '&:hover': hoverRow,
                             }}
                         >
                             <Box sx={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>

@@ -35,6 +35,7 @@ import {
     CaretRightIcon,
     CaretUpDownIcon,
     CheckCircleIcon,
+    CheckIcon,
     CheckSquareIcon,
     CircleIcon,
     CopyIcon,
@@ -47,9 +48,12 @@ import {
     ListIcon,
     LockSimpleIcon,
     MinusSquareIcon,
+    MonitorIcon,
+    MoonIcon,
     RadioButtonIcon,
     SignOutIcon,
     SquareIcon,
+    SunIcon,
     ShirtFoldedIcon,
     UserIcon,
     WarningCircleIcon,
@@ -297,6 +301,12 @@ export const WarningIcon = /* @__PURE__ */ icon(PhWarningIcon, 'WarningIcon');
 export const SuccessIcon = /* @__PURE__ */ icon(CheckCircleIcon, 'SuccessIcon');
 
 /* Form controls (used by the theme for MUI's own icons) */
+/* Appearance (colour scheme) */
+export const CheckMarkIcon = /* @__PURE__ */ icon(CheckIcon, 'CheckMarkIcon');
+export const SchemeSystemIcon = /* @__PURE__ */ icon(MonitorIcon, 'SchemeSystemIcon');
+export const SchemeLightIcon = /* @__PURE__ */ icon(SunIcon, 'SchemeLightIcon');
+export const SchemeDarkIcon = /* @__PURE__ */ icon(MoonIcon, 'SchemeDarkIcon');
+
 export const CheckboxIcon = /* @__PURE__ */ icon(SquareIcon, 'CheckboxIcon');
 export const CheckboxCheckedIcon = /* @__PURE__ */ icon(CheckSquareIcon, 'CheckboxCheckedIcon');
 export const CheckboxIndeterminateIcon = /* @__PURE__ */ icon(

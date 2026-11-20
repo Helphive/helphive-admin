@@ -14,3 +14,4 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as ShiftRuler, type ShiftBlock, type ShiftRulerProps } from './ShiftRuler';
 export { formatHour, toHour } from './rulerTime';
 export { default as ReasonDialog, type ReasonDialogProps } from './ReasonDialog';
+export { default as ColorSchemeSwitch, type ColorSchemeSwitchProps } from './ColorSchemeSwitch';

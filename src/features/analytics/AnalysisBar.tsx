@@ -200,7 +200,7 @@ export default function AnalysisBar() {
                         color: color.ink600,
                         textDecoration: 'none',
                         '&:hover': { bgcolor: color.surface, color: color.ink900 },
-                        '&.active': { bgcolor: color.ink900, color: '#FFFFFF' },
+                        '&.active': { bgcolor: color.inkFill, color: color.onInk },
                     },
                 }}
             >

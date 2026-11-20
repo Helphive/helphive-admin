@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
-import { Logo } from '@/components/ui';
+import { ColorSchemeSwitch, Logo } from '@/components/ui';
 import { API_HOST } from '@/lib/env';
 import { color, hairline, radius } from '@/theme/tokens';
 import EnvironmentBadge from '@/features/shell/EnvironmentBadge';
@@ -20,6 +20,7 @@ export default function AuthFrame({
         <Box
             component="main"
             sx={{
+                position: 'relative',
                 minHeight: '100vh',
                 display: 'grid',
                 placeItems: 'center',
@@ -28,6 +29,11 @@ export default function AuthFrame({
                 py: 6,
             }}
         >
+            {/* Appearance, reachable before signing in; placed so it moves nothing else. */}
+            <ColorSchemeSwitch
+                variant="compact"
+                sx={{ position: 'absolute', zIndex: 1, top: 16, right: 16 }}
+            />
             <Box sx={{ width: '100%', maxWidth: width }}>
                 <Box sx={{ mb: 3 }}>
                     <Logo />

@@ -6,7 +6,7 @@ import { getErrorMessage } from '@/lib/api';
 import { formatAgo, formatDateTime } from '@/lib/format';
 import { listQueryString } from '@/lib/listQuery';
 import { useNow } from '@/lib/hooks';
-import { color, font, hairline } from '@/theme/tokens';
+import { color, font, hairline, hoverRow } from '@/theme/tokens';
 import { useListAuditQuery } from './api';
 import { actionLabel, actorName, OUTCOME_META } from './model';
 
@@ -100,7 +100,7 @@ export default function AuditTrail({
                                     py: 1.25,
                                     textDecoration: 'none',
                                     color: 'inherit',
-                                    '&:hover': { bgcolor: color.subtle },
+                                    '&:hover': hoverRow,
                                     '&:focus-visible': { outlineOffset: -2 },
                                 }}
                             >

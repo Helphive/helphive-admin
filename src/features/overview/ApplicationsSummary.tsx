@@ -8,7 +8,7 @@ import { ApplicantCell, WaitMeter } from '@/features/applications/parts';
 import { getErrorMessage } from '@/lib/api';
 import { formatDuration } from '@/lib/format';
 import { useNow } from '@/lib/hooks';
-import { color, hairline } from '@/theme/tokens';
+import { hairline, hoverRow } from '@/theme/tokens';
 
 /** The provider-application queue in brief: how many wait, the oldest, and who waits longest. */
 export default function ApplicationsSummary() {
@@ -86,7 +86,7 @@ export default function ApplicationsSummary() {
                                             py: 1.25,
                                             color: 'inherit',
                                             textDecoration: 'none',
-                                            '&:hover': { bgcolor: color.subtle },
+                                            '&:hover': hoverRow,
                                             '&:focus-visible': { outlineOffset: -2 },
                                         }}
                                     >

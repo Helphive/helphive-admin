@@ -34,7 +34,7 @@ function rampCell(rate: number | null) {
     const ramp = chart.sequential;
     const i =
         rate <= 0 ? 0 : Math.min(ramp.length - 1, 1 + Math.floor((rate / 100) * (ramp.length - 1)));
-    return { bg: ramp[i], fg: i >= 3 ? '#FFFFFF' : color.ink900 };
+    return { bg: ramp[i], fg: i >= 3 ? chart.sequentialInk : color.ink900 };
 }
 
 /* ---------- Funnel ---------- */
@@ -106,7 +106,7 @@ export function FunnelPanel({ kind }: { kind: 'customer' | 'provider' }) {
                                 sx={{
                                     height: '100%',
                                     width: `${Math.max(first ? (s.count / first) * 100 : 0, s.count ? 1.5 : 0)}%`,
-                                    bgcolor: i === 0 ? color.ink900 : chart.categorical[0],
+                                    bgcolor: i === 0 ? color.inkFill : chart.categorical[0],
                                     borderRadius: `${radius.sm}px`,
                                 }}
                             />

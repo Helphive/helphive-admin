@@ -19,16 +19,23 @@ import { NAV_ITEMS, navItemFor, SECTIONS, type NavItem } from '@/app/navigation'
 import { ErrorBoundary, Logo, PageSkeleton, StatusPill } from '@/components/ui';
 import {
     AccountIcon,
+    CheckMarkIcon,
     CloseIcon,
     LogoutIcon,
     MenuIcon,
+    SchemeDarkIcon,
+    SchemeLightIcon,
+    SchemeSystemIcon,
     SearchIcon,
     SidebarIcon,
+    type AppIcon,
 } from '@/components/ui/icons';
 import { DemoBanner } from '@/features/auth/demo';
 import { useSession } from '@/features/auth/useSession';
 import { BUILD } from '@/lib/env';
-import { color, font, hairline, layout, radius } from '@/theme/tokens';
+import { useColorScheme } from '@/theme/colorScheme';
+import type { SchemePreference } from '@/theme/scheme';
+import { color, font, hairline, hoverItem, layout, radius } from '@/theme/tokens';
 import Breadcrumbs from './Breadcrumbs';
 import CommandPalette from './CommandPalette';
 import { shortcutLabel } from './shortcut';
@@ -59,8 +66,8 @@ function SkipLink() {
                 px: 2,
                 py: 1,
                 borderRadius: `${radius.sm}px`,
-                bgcolor: color.ink900,
-                color: color.surface,
+                bgcolor: color.inkFill,
+                color: color.onInk,
                 fontWeight: 700,
                 textDecoration: 'none',
                 '&:focus': { top: 8 },
@@ -109,7 +116,10 @@ function NavRow({
                 color: active ? color.ink900 : color.ink600,
                 bgcolor: active ? color.surface : 'transparent',
                 boxShadow: active ? `inset 0 0 0 1px ${color.line}` : 'none',
-                '&:hover': { color: color.ink900, bgcolor: active ? color.surface : color.canvas },
+                '&:hover': {
+                    color: color.ink900,
+                    ...(active ? { bgcolor: color.surface } : hoverItem),
+                },
                 '&:focus-visible': { outlineOffset: -2 },
                 '& svg': { fontSize: 18 },
             }}
@@ -241,7 +251,7 @@ function Sidebar({ rail, onToggle }: { rail: boolean; onToggle: () => void }) {
                                 fontSize: font.size.sm,
                                 fontWeight: 600,
                                 color: color.ink500,
-                                '&:hover': { bgcolor: color.canvas, color: color.ink900 },
+                                '&:hover': { ...hoverItem, color: color.ink900 },
                                 '& svg': { fontSize: 18 },
                             }}
                         >
@@ -257,9 +267,58 @@ function Sidebar({ rail, onToggle }: { rail: boolean; onToggle: () => void }) {
 
 /* ---------- Top bar ---------- */
 
+const APPEARANCE: { value: SchemePreference; label: string; Icon: AppIcon }[] = [
+    { value: 'system', label: 'System', Icon: SchemeSystemIcon },
+    { value: 'light', label: 'Light', Icon: SchemeLightIcon },
+    { value: 'dark', label: 'Dark', Icon: SchemeDarkIcon },
+];
+
+// Quick switch in the account menu: a caption and three radio menu items, as direct children of the
+// menu so arrow keys reach them. Picking one keeps the menu open so the change can be seen.
+function useAppearanceItems() {
+    const { preference, setPreference } = useColorScheme();
+    return [
+        <Typography
+            key="appearance-label"
+            component="li"
+            role="presentation"
+            variant="caption"
+            sx={{ display: 'block', px: 1.5, pt: 0.5, pb: 0.5 }}
+        >
+            Appearance
+        </Typography>,
+        ...APPEARANCE.map(({ value, label, Icon }) => {
+            const checked = preference === value;
+            return (
+                <MenuItem
+                    key={value}
+                    role="menuitemradio"
+                    aria-checked={checked}
+                    aria-label={`${label} appearance`}
+                    selected={checked}
+                    onClick={() => setPreference(value)}
+                    sx={{ minHeight: 34 }}
+                >
+                    <ListItemIcon>
+                        <Icon />
+                    </ListItemIcon>
+                    {label}
+                    {checked && (
+                        <CheckMarkIcon
+                            weight="bold"
+                            sx={{ ml: 'auto', fontSize: 16, color: color.ink900 }}
+                        />
+                    )}
+                </MenuItem>
+            );
+        }),
+    ];
+}
+
 function AccountMenu() {
     const { admin, name, roleLabel, demo, signOut } = useSession();
     const navigate = useNavigate();
+    const appearanceItems = useAppearanceItems();
     const [anchor, setAnchor] = useState<HTMLElement | null>(null);
     const initials =
         `${admin?.firstName?.[0] ?? ''}${admin?.lastName?.[0] ?? ''}`.toUpperCase() || 'A';
@@ -314,6 +373,9 @@ function AccountMenu() {
                     </ListItemIcon>
                     Your account
                 </MenuItem>
+                <Divider sx={{ my: 0.5 }} />
+                {appearanceItems}
+                <Divider sx={{ my: 0.5 }} />
                 <MenuItem
                     onClick={() => {
                         setAnchor(null);

@@ -30,7 +30,7 @@ import { ApplicantCell, WaitMeter } from '@/features/applications/parts';
 import { getErrorMessage } from '@/lib/api';
 import { formatDuration, formatPercent } from '@/lib/format';
 import { useDocumentTitle, useNow, useUrlState } from '@/lib/hooks';
-import { chart, color, hairline } from '@/theme/tokens';
+import { chart, color, hairline, hoverRow } from '@/theme/tokens';
 import { computeOverview } from './insights';
 
 const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
@@ -258,7 +258,7 @@ export default function ApplicationInsightsPage() {
                                                 py: 1.25,
                                                 color: 'inherit',
                                                 textDecoration: 'none',
-                                                '&:hover': { bgcolor: color.subtle },
+                                                '&:hover': hoverRow,
                                                 '&:focus-visible': { outlineOffset: -2 },
                                             }}
                                         >

@@ -10,8 +10,9 @@ import {
     Typography,
 } from '@mui/material';
 import { srOnly } from '@/components/ui';
+import { useColorScheme } from '@/theme/colorScheme';
 import { color } from '@/theme/tokens';
-import { echarts, THEME, type EChartsCoreOption } from './echarts';
+import { echarts, resolveColors, themeName, type EChartsCoreOption } from './echarts';
 
 export interface ChartTable {
     headers: string[];
@@ -31,17 +32,19 @@ export interface ChartProps {
 
 /**
  * Base chart: renders an ECharts option with the console theme (SVG renderer), resizes with
- * its container, and carries an accessible summary plus an optional table view.
+ * its container, and carries an accessible summary plus an optional table view. Colours in the option
+ * may be tokens; they are resolved for the scheme on screen, and a scheme switch redraws the chart.
  */
 export default function Chart({ option, title, summary, table, height = 240 }: ChartProps) {
     const ref = useRef<HTMLDivElement>(null);
     const instance = useRef<ReturnType<typeof echarts.init> | null>(null);
     const [showTable, setShowTable] = useState(false);
     const summaryId = useId();
+    const { scheme } = useColorScheme();
 
     useEffect(() => {
         if (!ref.current) return;
-        const chart = echarts.init(ref.current, THEME, { renderer: 'svg' });
+        const chart = echarts.init(ref.current, themeName(scheme), { renderer: 'svg' });
         instance.current = chart;
         const observer = new ResizeObserver(() => chart.resize());
         observer.observe(ref.current);
@@ -50,11 +53,13 @@ export default function Chart({ option, title, summary, table, height = 240 }: C
             chart.dispose();
             instance.current = null;
         };
-    }, [showTable]);
+    }, [showTable, scheme]);
 
     useEffect(() => {
-        instance.current?.setOption({ animationDuration: 300, ...option }, { notMerge: true });
-    }, [option, showTable]);
+        instance.current?.setOption(resolveColors({ animationDuration: 300, ...option }, scheme), {
+            notMerge: true,
+        });
+    }, [option, showTable, scheme]);
 
     return (
         <Box sx={{ minWidth: 0 }}>

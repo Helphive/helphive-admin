@@ -5,7 +5,7 @@ import { RefreshIcon } from '@/components/ui/icons';
 import { formatAgo, formatNumber } from '@/lib/format';
 import { useDocumentTitle, useNow, useUrlState } from '@/lib/hooks';
 import { TONE_STYLES } from '@/components/ui';
-import { color, font, hairline, radius } from '@/theme/tokens';
+import { color, font, hairline, hoverRow, radius } from '@/theme/tokens';
 import { useGetObsOverviewQuery, type Overview } from './api';
 import {
     ALERT_TONE,
@@ -308,7 +308,7 @@ export default function HealthPage() {
                                                         ...rowSx,
                                                         textDecoration: 'none',
                                                         color: 'inherit',
-                                                        '&:hover': { bgcolor: color.subtle },
+                                                        '&:hover': hoverRow,
                                                     }}
                                                 >
                                                     <Box sx={{ minWidth: 0, flex: 1 }}>

@@ -12,7 +12,7 @@ import { MetaPill, RecordLink, Ref } from '@/features/ops/parts';
 import { getErrorMessage } from '@/lib/api';
 import { formatAgo, formatDateTime } from '@/lib/format';
 import { useDocumentTitle, useNow, useUrlState } from '@/lib/hooks';
-import { color, font, hairline } from '@/theme/tokens';
+import { color, font, hairline, hoverItem } from '@/theme/tokens';
 
 const POLL_MS = 30_000;
 
@@ -53,7 +53,7 @@ function ListRow({
                 px: 2,
                 py: 1.25,
                 borderTop: hairline,
-                bgcolor: selected ? color.canvas : 'transparent',
+                ...(selected ? hoverItem : { bgcolor: 'transparent' }),
                 boxShadow: selected ? `inset 3px 0 0 ${color.ink900}` : 'none',
             }}
         >

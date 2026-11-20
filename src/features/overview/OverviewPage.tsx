@@ -40,7 +40,7 @@ import { getErrorMessage } from '@/lib/api';
 import { formatAgo, formatDateTime } from '@/lib/format';
 import { useDocumentTitle, useNow, useUrlState } from '@/lib/hooks';
 import { formatMoney } from '@/lib/money';
-import { color, font, hairline } from '@/theme/tokens';
+import { color, font, hairline, hoverRow } from '@/theme/tokens';
 import ApplicationsSummary from './ApplicationsSummary';
 
 const POLL_MS = 60_000;
@@ -132,7 +132,7 @@ function AttentionList({ o, now }: { o: Overview; now: number }) {
                                         py: 1.5,
                                         color: 'inherit',
                                         textDecoration: 'none',
-                                        '&:hover': to ? { bgcolor: color.subtle } : undefined,
+                                        '&:hover': to ? hoverRow : undefined,
                                         '&:focus-visible': { outlineOffset: -2 },
                                     }}
                                 >

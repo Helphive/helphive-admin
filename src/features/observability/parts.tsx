@@ -346,7 +346,7 @@ export function MiniBars({
                             y={height - h}
                             width={Math.max(1, w - 1)}
                             height={h}
-                            fill={v ? color.ink300 : color.line}
+                            style={{ fill: v ? color.ink300 : color.line }}
                         />
                         {e > 0 && (
                             <rect
@@ -354,7 +354,7 @@ export function MiniBars({
                                 y={height - e}
                                 width={Math.max(1, w - 1)}
                                 height={e}
-                                fill={color.red500}
+                                style={{ fill: color.red500 }}
                             />
                         )}
                     </g>

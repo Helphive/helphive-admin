@@ -114,7 +114,11 @@ function GraphView({ data }: { data: GraphData }) {
                         itemStyle: {
                             color: n.band ? SEVERITY_FILL[n.band] : color.ink200,
                             borderColor:
-                                n.depth === 0 ? color.ink900 : n.suspended ? color.red700 : '#fff',
+                                n.depth === 0
+                                    ? color.ink900
+                                    : n.suspended
+                                      ? color.red700
+                                      : color.surface,
                             borderWidth: n.depth === 0 || n.suspended ? 3 : 1,
                         },
                         label: { show: true, formatter: n.name },

@@ -1,9 +1,21 @@
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import path from 'node:path';
+import { schemeCss } from './src/theme/tokens';
+import { bootScript } from './src/theme/schemeBoot';
+
+// Puts the colour tokens (light and dark CSS variables) and the scheme boot script into <head>, so the
+// first paint already has the right scheme and colours. Both come from src/theme, the single source.
+const colorScheme = (): Plugin => ({
+    name: 'helphive-color-scheme',
+    transformIndexHtml: () => [
+        { tag: 'style', attrs: { id: 'hh-tokens' }, children: schemeCss(), injectTo: 'head' },
+        { tag: 'script', children: bootScript, injectTo: 'head' },
+    ],
+});
 
 export default defineConfig({
-    plugins: [react()],
+    plugins: [react(), colorScheme()],
     resolve: {
         alias: { '@': path.resolve(__dirname, './src') },
     },

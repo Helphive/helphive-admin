@@ -5,7 +5,7 @@ import { NAV_ITEMS } from '@/app/navigation';
 import { useApplicationCommands } from '@/features/applications/commands';
 import { useSession } from '@/features/auth/useSession';
 import { AccountIcon, LogoutIcon, SearchIcon } from '@/components/ui/icons';
-import { color, font, hairline, radius } from '@/theme/tokens';
+import { color, font, hairline, hoverItem, radius } from '@/theme/tokens';
 import { filterCommands, type Command } from './commands';
 import { SEARCH_MIN, useRecordSearch } from './useRecordSearch';
 import { shortcutLabel } from './shortcut';
@@ -243,7 +243,7 @@ function Palette({ onClose }: { onClose: () => void }) {
                                     borderRadius: `${radius.sm}px`,
                                     cursor: 'pointer',
                                     color: color.ink700,
-                                    bgcolor: selected ? color.canvas : 'transparent',
+                                    ...(selected ? hoverItem : { bgcolor: 'transparent' }),
                                     boxShadow: selected ? `inset 2px 0 0 ${color.ink900}` : 'none',
                                     '& svg': { fontSize: 18, color: color.ink500, flexShrink: 0 },
                                 }}

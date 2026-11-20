@@ -5,7 +5,8 @@ import { Circle, MapContainer, Popup, TileLayer, Tooltip, useMap } from 'react-l
 import { latLngBounds } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Box } from '@mui/material';
-import { color } from '@/theme/tokens';
+import { useColorScheme } from '@/theme/colorScheme';
+import { color, rawColor } from '@/theme/tokens';
 
 export interface MapArea {
     id: string;
@@ -63,6 +64,8 @@ function Fit({ areas, focusId }: { areas: MapArea[]; focusId?: string | null }) 
  * so the map never suggests more precision than the API gives.
  */
 export default function AreaMap({ areas, focusId, height = 520, label, onSelect }: AreaMapProps) {
+    // Leaflet writes colours into SVG attributes, where CSS variables do not work.
+    const { scheme } = useColorScheme();
     const center = useMemo<[number, number]>(
         () => (areas[0] ? [areas[0].latitude, areas[0].longitude] : [53.48, -2.24]),
         // The first centre only; Fit takes over afterwards.
@@ -97,9 +100,9 @@ export default function AreaMap({ areas, focusId, height = 520, label, onSelect 
                             center={[a.latitude, a.longitude]}
                             radius={a.radiusKm * 1000}
                             pathOptions={{
-                                color: TONE[a.tone],
+                                color: rawColor(TONE[a.tone], scheme),
                                 weight: focused ? 3 : 1.5,
-                                fillColor: TONE[a.tone],
+                                fillColor: rawColor(TONE[a.tone], scheme),
                                 fillOpacity: focused ? 0.35 : 0.18,
                             }}
                             eventHandlers={onSelect ? { click: () => onSelect(a.id) } : undefined}

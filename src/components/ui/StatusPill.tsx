@@ -1,5 +1,6 @@
 import { memo, type ReactNode } from 'react';
 import { Box, type SxProps, type Theme } from '@mui/material';
+import { color } from '@/theme/tokens';
 import { TONE_STYLES, type Tone } from './status';
 
 interface StatusPillProps {
@@ -70,7 +71,7 @@ export function Count({ value, label, tone }: { value: number; label?: string; t
                 lineHeight: 1,
                 fontVariantNumeric: 'tabular-nums',
                 ...(tone === 'ink'
-                    ? { color: '#FFFFFF', bgcolor: 'grey.900' }
+                    ? { color: color.onInk, bgcolor: color.inkFill }
                     : {
                           color: 'grey.700',
                           bgcolor: 'grey.100',

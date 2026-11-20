@@ -1,7 +1,7 @@
 import { useId, useState } from 'react';
 import { Box, ButtonBase, Collapse, Tooltip } from '@mui/material';
 import { StatusPill } from '@/components/ui';
-import { color, font, hairline, radius } from '@/theme/tokens';
+import { color, font, hairline, hoverRow, radius } from '@/theme/tokens';
 import {
     ACTION_LABEL,
     MODE_LABEL,
@@ -200,7 +200,7 @@ export function ScoreLedger({
                                         ? undefined
                                         : 'repeating-linear-gradient(135deg, transparent 0 4px, rgba(255,255,255,.35) 4px 6px)',
                                 cursor: compact ? 'default' : 'pointer',
-                                '& + &': { borderLeft: '2px solid #fff' },
+                                '& + &': { borderLeft: `2px solid ${color.surface}` },
                             }}
                         />
                     </Tooltip>
@@ -231,7 +231,7 @@ export function ScoreLedger({
                                     py: 1,
                                     px: 0.5,
                                     borderRadius: `${radius.sm}px`,
-                                    '&:hover': { bgcolor: color.subtle },
+                                    '&:hover': hoverRow,
                                 }}
                             >
                                 <Box

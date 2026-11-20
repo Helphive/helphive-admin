@@ -14,7 +14,7 @@ import { RiskIcon } from '@/components/ui/icons';
 import { getErrorMessage } from '@/lib/api';
 import { formatAgo } from '@/lib/format';
 import { useDocumentTitle, useUrlState } from '@/lib/hooks';
-import { chart, color, font, hairline } from '@/theme/tokens';
+import { chart, color, font, hairline, hoverRow } from '@/theme/tokens';
 import { useGetRiskOverviewQuery } from './api';
 import { SEVERITIES, SEVERITY_LABEL, money } from './model';
 import { CaseStatusPill, ModePill, SeverityPill } from './parts';
@@ -212,7 +212,7 @@ export default function RiskOverviewPage() {
                                         borderTop: hairline,
                                         cursor: 'pointer',
                                         '&:first-of-type': { borderTop: 0 },
-                                        '&:hover': { bgcolor: color.subtle },
+                                        '&:hover': hoverRow,
                                     }}
                                 >
                                     <SeverityPill severity={c.severity} />

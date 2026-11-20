@@ -15,7 +15,7 @@ import { JsonView } from '@/components/detail';
 import { EmptyState, PageHeader, Panel, StatusPill, TableSkeleton } from '@/components/ui';
 import { ChevronDownIcon, ChevronRightIcon, LogsIcon } from '@/components/ui/icons';
 import { useDocumentTitle, useUrlState } from '@/lib/hooks';
-import { color, font, hairline } from '@/theme/tokens';
+import { color, font, hairline, hoverRow } from '@/theme/tokens';
 import { useQueryLogsQuery } from './api';
 import { SEVERITY_TONE, formatMs, isObjectId, mono, shortRevision, type LogEntry } from './model';
 import { LoadError, Mono, OutLink, StackTrace } from './parts';
@@ -54,7 +54,7 @@ function Entry({ e, onRequest }: { e: LogEntry; onRequest: (id: string) => void 
                     px: 2,
                     py: 1,
                     cursor: 'pointer',
-                    '&:hover': { bgcolor: color.subtle },
+                    '&:hover': hoverRow,
                     '&:focus-visible': {
                         outline: `2px solid ${color.coral600}`,
                         outlineOffset: -2,

@@ -12,7 +12,7 @@ import {
     ZoomInIcon,
     ZoomOutIcon,
 } from '@/components/ui/icons';
-import { color, font, hairline, radius } from '@/theme/tokens';
+import { color, font, hairline, hoverItem, radius } from '@/theme/tokens';
 import { safeDocumentUrl } from '@/lib/safeUrl';
 import { documentKind, type ViewerDocument } from './documentKind';
 
@@ -137,7 +137,7 @@ export default function DocumentViewer({
                                 color: selected ? color.ink900 : color.ink600,
                                 border: `1px solid ${selected ? color.ink900 : 'transparent'}`,
                                 whiteSpace: 'nowrap',
-                                '&:hover': { bgcolor: color.canvas },
+                                '&:hover': hoverItem,
                                 '& svg': { fontSize: 16 },
                             }}
                         >

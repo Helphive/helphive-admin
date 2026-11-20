@@ -103,8 +103,8 @@ function SetUp({
                             placeItems: 'center',
                             fontSize: font.size.xs,
                             fontWeight: 800,
-                            color: color.surface,
-                            bgcolor: color.ink900,
+                            color: color.onInk,
+                            bgcolor: color.inkFill,
                             mt: '1px',
                         },
                     }}
@@ -129,6 +129,7 @@ function SetUp({
                                 <Box
                                     sx={{
                                         p: 1.5,
+                                        // Always white: authenticator apps read dark-on-white codes.
                                         bgcolor: '#FFFFFF',
                                         border: hairline,
                                         borderRadius: `${radius.md}px`,
