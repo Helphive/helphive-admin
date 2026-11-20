@@ -72,3 +72,28 @@ body {
 :root[data-theme='dark'] .leaflet-control-attribution a {
     color: var(--hh-coral-600);
 }
+
+/* Scrollbars: one thin, quiet style on every scrolling area, in both schemes. Standard properties first
+   (Chrome 121+, Firefox, Safari 18.2+). The -webkit- pseudo-elements are only for browsers without them:
+   a browser that supports scrollbar-color ignores the pseudo-elements on any element that sets it. */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--hh-ink-300) transparent;
+}
+@supports not (scrollbar-color: auto) {
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: var(--hh-ink-300);
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--hh-ink-500);
+    }
+}
