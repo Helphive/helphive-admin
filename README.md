@@ -81,17 +81,13 @@ Permissions: pages ask `can('applications.decide')`, never about roles. Roles ma
 
 ## Deployment
 
-Firebase Hosting, project `helphive`, hosting target `helphive` (`.firebaserc`, `firebase.json`).
-`firebase.json` serves the static `dist/` folder with a single-page-app rewrite and long-lived
-caching for hashed assets.
+Cloudflare Workers static assets: Worker `helphive-admin` on `admin.helphive.himaiz.com` (`wrangler.jsonc`), with a
+single-page-app fallback. Security headers (CSP, HSTS, no framing) and caching are in `public/_headers`. The old
+Firebase Hosting site is disabled.
 
-- `.github/workflows/firebase-hosting-merge.yml`: on push to `main`, builds and deploys to the live
-  channel.
-- `.github/workflows/firebase-hosting-pull-request.yml`: on a pull request from this repository,
-  builds and deploys a preview channel and comments the link.
+- Deploy: put `VITE_APP_API_URL` and `VITE_APP_BUILD` in `.env.production.local` (gitignored), set
+  `CLOUDFLARE_API_TOKEN`, then `npm run deploy:cf` (build plus `wrangler deploy`). Pushes don't deploy on their own.
 - `.github/workflows/lint.yml`: on pull requests, applies lint and format fixes, pushes them, then
   fails on type errors, lint warnings or formatting.
 
-Repository settings the workflows use: variable `VITE_APP_API_URL`, secret
-`FIREBASE_SERVICE_ACCOUNT_HELPHIVE`. A preview channel is served from a `*.web.app` address, which
-the API must allow in its CORS settings for previews to sign in.
+There are no preview deployments: the live API only accepts the production origins.
