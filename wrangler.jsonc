@@ -1,6 +1,6 @@
 // Admin console on Cloudflare Workers static assets (free; asset requests don't count against the Worker quota).
-// Deploy from this folder, with CLOUDFLARE_API_TOKEN set (secret store `cloudflare-api-token`, VPN only) and the
-// production values in .env.production.local (VITE_APP_API_URL, VITE_APP_BUILD): npm run deploy:cf
+// Deployed by Cloudflare Workers Builds on every push to main (npm run build, then npx wrangler deploy); the
+// API URL is a build variable on the Worker and VITE_APP_BUILD is set to the commit SHA by the build command.
 // Security headers (CSP and others) are in public/_headers.
 {
 	"name": "helphive-admin",

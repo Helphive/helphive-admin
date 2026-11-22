@@ -85,8 +85,11 @@ Cloudflare Workers static assets: Worker `helphive-admin` on `admin.helphive.him
 single-page-app fallback. Security headers (CSP, HSTS, no framing) and caching are in `public/_headers`. The old
 Firebase Hosting site is disabled.
 
-- Deploy: put `VITE_APP_API_URL` and `VITE_APP_BUILD` in `.env.production.local` (gitignored), set
-  `CLOUDFLARE_API_TOKEN`, then `npm run deploy:cf` (build plus `wrangler deploy`). Pushes don't deploy on their own.
+- Deploy: every push to `main` builds and deploys through Cloudflare Workers Builds (build
+  `VITE_APP_BUILD=$WORKERS_CI_COMMIT_SHA npm run build`, deploy `npx wrangler deploy`; `VITE_APP_API_URL` and
+  `NODE_VERSION` are build variables on the Worker, plus `SWC_NATIVE_BINDING_CACHE_SKIP_SECURITY_CHECK=1`, because
+  `@swc/core` 1.16.13+ refuses the build image's cache folders otherwise). Build logs are under the Worker's
+  Deployments tab.
 - `.github/workflows/lint.yml`: on pull requests, applies lint and format fixes, pushes them, then
   fails on type errors, lint warnings or formatting.
 
