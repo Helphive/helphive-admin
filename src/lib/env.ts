@@ -11,7 +11,7 @@ export const CLIENT_HEADERS = { 'X-App-Platform': 'admin', 'X-App-Version': BUIL
 
 export type AppEnvironment = 'production' | 'preview' | 'local';
 
-/** Where the console itself is served from. Firebase preview channels contain "--". */
+/** Where the console itself is served from. A "--" in the hostname means a preview. */
 export function appEnvironment(hostname = window.location.hostname): AppEnvironment {
     if (hostname === 'localhost' || hostname === '127.0.0.1') return 'local';
     if (hostname.includes('--')) return 'preview';
